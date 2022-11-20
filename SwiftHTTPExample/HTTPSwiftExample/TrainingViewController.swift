@@ -9,7 +9,7 @@
 import UIKit
 import CoreMotion
 
-let SERVER_URL = "http://10.0.1.6:8000" // change this for your server name!!!
+let SERVER_URL = "http://10.8.144.86:8000" // change this for your server name!!!
 
 class TrainingViewController: UIViewController, URLSessionDelegate {
 
@@ -19,6 +19,7 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        startMotionUpdates()
     }
     
     // Should be a button and a 1 second delay or so, maybe detect a movement before trying to record? Same sort of code/setup to test
@@ -43,35 +44,44 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     
     var isCalibrating = false
     var isWaitingForMotionData = false
-    
-    var dsid = 0;
-    
-    //Minimum magniture to record motion data
+        
+    //Minimum magnitude to record motion data
     var magValue = 0.1
 
+    //Hardcode as 0 for now, maybe in the final make multiple models for easy/medium/hard modes
+    let dsid = 0
+    
     // MARK: Class Properties with Observers
-    enum CalibrationStage {
+    enum CalibrationType {
         case none
         case bop_it
-        case whip_it
-        case naynay
+        case twist_it
+        case pull_it
     }
-
+    
+    @IBAction func BopItButton(_ sender: Any) {
+        startCalibration(newCalibrationType: CalibrationType.bop_it)
+    }
+    
     //Todo some animation or something, probably can do with button clicks or smthing
-    var calibrationStage:CalibrationStage = .none {
+    var calibrationType:CalibrationType = .none {
         didSet{
-            switch calibrationStage {
+            switch calibrationType {
             case .bop_it:
                 self.isCalibrating = true
+                setDelayedWaitingToTrue(1.0)
                 break
-            case .whip_it:
+            case .pull_it:
                 self.isCalibrating = true
+                setDelayedWaitingToTrue(1.0)
                 break
-            case .naynay:
+            case .twist_it:
                 self.isCalibrating = true
+                setDelayedWaitingToTrue(1.0)
                 break
             case .none:
                 self.isCalibrating = false
+                setDelayedWaitingToTrue(1.0)
                 break
             }
         }
@@ -108,15 +118,13 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     func largeMotionEventOccurred(){
         if(self.isCalibrating){
             //send a labeled example
-            if(self.calibrationStage != .none && self.isWaitingForMotionData)
+            if(self.calibrationType != .none && self.isWaitingForMotionData)
             {
                 self.isWaitingForMotionData = false
                 
                 // send data to the server with label
                 sendFeatures(self.ringBuffer.getDataAsVector(),
-                             withLabel: self.calibrationStage)
-                
-                self.nextCalibrationStage()
+                             withLabel: self.calibrationType)
             }
         }
         else
@@ -133,79 +141,58 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         }
     }
     
-    func nextCalibrationStage(){
-        //todo set calibration stage with button press
-    }
-    
-    //MARK: Get New Dataset ID
-    @IBAction func getDataSetId(_ sender: AnyObject) {
-        // create a GET request for a new DSID from server
-        let baseURL = "\(SERVER_URL)/GetNewDatasetId"
-        
-        let getUrl = URL(string: baseURL)
-        let request: URLRequest = URLRequest(url: getUrl!)
-        let dataTask : URLSessionDataTask = self.session.dataTask(with: request,
-            completionHandler:{(data, response, error) in
-                if(error != nil){
-                    print("Response:\n%@",response!)
-                }
-                else{
-                    let jsonDictionary = self.convertDataToDictionary(with: data)
-                    
-                    // This better be an integer
-                    if let dsid = jsonDictionary["dsid"]{
-                        self.dsid = dsid as! Int
-                    }
-                }
-                
-        })
-        
-        dataTask.resume() // start the task
-    }
-    
     //MARK: Calibration
     //MARK: TODO MAKE CONNECTED TO BUTTON
-    @IBAction func startCalibration(_ sender: AnyObject) {
+    func startCalibration(newCalibrationType:CalibrationType) {
         self.isWaitingForMotionData = false // dont do anything yet
-        nextCalibrationStage()
+        self.calibrationType = newCalibrationType
+        //idk somethign ,proe
+    }
+    
+    func setDelayedWaitingToTrue(_ time:Double){
+        DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: {
+            self.isWaitingForMotionData = true
+        })
     }
     
     //MARK: Comm with Server
-    func sendFeatures(_ array:[Double], withLabel label:CalibrationStage){
-        let baseURL = "\(SERVER_URL)/AddDataPoint"
-        let postUrl = URL(string: "\(baseURL)")
+    func sendFeatures(_ array:[Double], withLabel label:CalibrationType){
         
-        // create a custom HTTP POST request
-        var request = URLRequest(url: postUrl!)
-        
-        // data to send in body of post request (send arguments as json)
-        let jsonUpload:NSDictionary = ["feature":array,
-                                       "label":"\(label)",
-                                       "dsid":self.dsid]
-        
-        
-        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
-        
-        request.httpMethod = "POST"
-        request.httpBody = requestBody
-        
-        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
-            completionHandler:{(data, response, error) in
-                if(error != nil){
-                    if let res = response{
-                        print("Response:\n",res)
-                    }
-                }
-                else{
-                    let jsonDictionary = self.convertDataToDictionary(with: data)
-                    
-                    print(jsonDictionary["feature"]!)
-                    print(jsonDictionary["label"]!)
-                }
-
-        })
-        
-        postTask.resume() // start the task
+        print(array)
+        print(label)
+//        let baseURL = "\(SERVER_URL)/AddDataPoint"
+//        let postUrl = URL(string: "\(baseURL)")
+//
+//        // create a custom HTTP POST request
+//        var request = URLRequest(url: postUrl!)
+//
+//        // data to send in body of post request (send arguments as json)
+//        let jsonUpload:NSDictionary = ["feature":array,
+//                                       "label":"\(label)"]
+//
+//
+//        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+//
+//        request.httpMethod = "POST"
+//        request.httpBody = requestBody
+//
+//        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+//            completionHandler:{(data, response, error) in
+//                if(error != nil){
+//                    if let res = response{
+//                        print("Response:\n",res)
+//                    }
+//                }
+//                else{
+//                    let jsonDictionary = self.convertDataToDictionary(with: data)
+//
+//                    print(jsonDictionary["feature"]!)
+//                    print(jsonDictionary["label"]!)
+//                }
+//
+//        })
+//
+//        postTask.resume() // start the task
     }
     
     //MARK: JSON Conversion Functions

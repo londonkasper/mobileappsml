@@ -190,15 +190,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Training" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5m-pQ-cL7">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Training" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5m-pQ-cL7">
                                 <rect key="frame" x="166" y="99" width="61" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9il-gj-cam">
+                                <rect key="frame" x="19" y="535" width="61.5" height="14"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Bop it"/>
+                                <connections>
+                                    <action selector="BopItButton:" destination="8hY-js-gaY" eventType="touchUpInside" id="EW2-YV-TQe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aj6-8s-ZOy">
+                                <rect key="frame" x="157.5" y="526.5" width="60" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="SxT-x5-c1e"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Pull it"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="923-Ux-KMt">
+                                <rect key="frame" x="290.5" y="526.5" width="70.5" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Twist it"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="aj6-8s-ZOy" firstAttribute="centerX" secondItem="wPL-bw-OK4" secondAttribute="centerX" id="5YS-kz-3YA"/>
+                            <constraint firstItem="o5m-pQ-cL7" firstAttribute="leading" secondItem="wPL-bw-OK4" secondAttribute="leading" constant="166" id="AM3-xP-K7b"/>
+                            <constraint firstItem="aj6-8s-ZOy" firstAttribute="baseline" secondItem="9il-gj-cam" secondAttribute="firstBaseline" id="Blm-zr-jj0"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="923-Ux-KMt" secondAttribute="trailing" constant="-2" id="Dta-nc-1Kc"/>
+                            <constraint firstItem="o5m-pQ-cL7" firstAttribute="top" secondItem="vLY-l5-dvY" secondAttribute="bottom" constant="55" id="OsR-lu-rlr"/>
+                            <constraint firstItem="LSH-A2-Req" firstAttribute="top" secondItem="9il-gj-cam" secondAttribute="bottom" constant="118" id="Otk-hs-n31"/>
+                            <constraint firstItem="9il-gj-cam" firstAttribute="leading" secondItem="wPL-bw-OK4" secondAttribute="leadingMargin" constant="3" id="Tje-Rb-W3o"/>
+                            <constraint firstItem="aj6-8s-ZOy" firstAttribute="baseline" secondItem="923-Ux-KMt" secondAttribute="baseline" id="U1G-UI-NEg"/>
+                            <constraint firstItem="aj6-8s-ZOy" firstAttribute="leading" secondItem="9il-gj-cam" secondAttribute="trailing" constant="77" id="UPa-EC-jLq"/>
+                            <constraint firstItem="923-Ux-KMt" firstAttribute="leading" secondItem="aj6-8s-ZOy" secondAttribute="trailing" constant="73" id="cSN-YG-GXz"/>
+                            <constraint firstItem="9il-gj-cam" firstAttribute="baseline" secondItem="aj6-8s-ZOy" secondAttribute="baseline" id="eL8-zO-EVD"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="uZY-zH-Vfk"/>
                 </viewController>
