@@ -106,7 +106,6 @@ class PredictOneFromDatasetId(BaseHandler):
         # load the model from the database (using pickle)
         # we are blocking tornado!! no!!
         if dsid not in self.clf:
-            print("here1")
             self.write_json({"trained":False})
   
         else:
