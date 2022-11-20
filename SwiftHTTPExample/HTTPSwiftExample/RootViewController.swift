@@ -21,7 +21,29 @@ let SERVER_URL = "http://10.0.1.6:8000" // change this for your server name!!!
 import UIKit
 import CoreMotion
 
-class ViewController: UIViewController, URLSessionDelegate {
+class RootViewController: UIViewController, URLSessionDelegate {
+    
+    /**
+     Intial view controller, code not commented out for refrence later.
+     Todo: Delete me :D
+     */
+    
+    // MARK: View Controller Life Cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        
+//        // create reusable animation
+//        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+//        animation.type = CATransitionType.fade
+//        animation.duration = 0.5
+//
+//
+//        // setup core motion handlers
+//        startMotionUpdates()
+//
+//        dsid = 1 // set this and it will update UI
+    }
     
     // MARK: Class Properties
     lazy var session: URLSession = {
@@ -241,23 +263,6 @@ class ViewController: UIViewController, URLSessionDelegate {
         label.backgroundColor = UIColor.white
     }
     
-    // MARK: View Controller Life Cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        
-        // create reusable animation
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        animation.type = CATransitionType.fade
-        animation.duration = 0.5
-        
-        
-        // setup core motion handlers
-        startMotionUpdates()
-        
-        dsid = 1 // set this and it will update UI
-    }
 
     //MARK: Get New Dataset ID
     @IBAction func getDataSetId(_ sender: AnyObject) {
