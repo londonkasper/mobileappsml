@@ -25,7 +25,7 @@ class PrintHandlers(BaseHandler):
         self.write(self.application.handlers_string.replace('),','),\n'))
 
 class UploadLabeledDatapointHandler(BaseHandler):
-    def post(self):
+    async def post(self):
         '''Save data point and class label to database
         '''
         data = json.loads(self.request.body.decode("utf-8"))
@@ -35,7 +35,7 @@ class UploadLabeledDatapointHandler(BaseHandler):
         label = data['label']
         sess  = data['dsid']
 
-        dbid = self.db.labeledinstances.insert_one(
+        dbid = await self.db.labeledinstances.insert_one(
             {"feature":fvals,"label":label,"dsid":sess}
             );
         self.write_json({"id":str(dbid),
@@ -45,10 +45,10 @@ class UploadLabeledDatapointHandler(BaseHandler):
             "label":label})
 
 class RequestNewDatasetId(BaseHandler):
-    def get(self):
+    async def get(self):
         '''Get a new dataset ID for building a new dataset
         '''
-        a = self.db.labeledinstances.find_one(sort=[("dsid", -1)])
+        a = await self.db.labeledinstances.find_one(sort=[("dsid", -1)])
         if a == None:
             newSessionId = 1
         else:
@@ -56,12 +56,12 @@ class RequestNewDatasetId(BaseHandler):
         self.write_json({"dsid":newSessionId})
 
 class UpdateModelForDatasetId(BaseHandler):
-    def get(self):
+    async def get(self):
         '''Train a new model (or update) for given dataset ID
         '''
         dsid = self.get_int_arg("dsid",default=0)
 
-        data = self.get_features_and_labels_as_SFrame(dsid)
+        data = await self.get_features_and_labels_as_SFrame(dsid)
 
         # fit the model to the data
         acc = -1
@@ -70,7 +70,7 @@ class UpdateModelForDatasetId(BaseHandler):
             
             model = tc.classifier.create(data,target='target',verbose=0)# training
             yhat = model.predict(data)
-            self.clf['best'] = model
+            self.clf[dsid] = model
             acc = sum(yhat==data['target'])/float(len(data))
             # save model for use later, if desired
             model.save('../models/turi_model_dsid%d'%(dsid))
@@ -80,11 +80,11 @@ class UpdateModelForDatasetId(BaseHandler):
         # if training takes a while, we are blocking tornado!! No!!
         self.write_json({"resubAccuracy":acc})
 
-    def get_features_and_labels_as_SFrame(self, dsid):
+    async def get_features_and_labels_as_SFrame(self, dsid):
         # create feature vectors from database
         features=[]
         labels=[]
-        for a in self.db.labeledinstances.find({"dsid":dsid}): 
+        async for a in self.db.labeledinstances.find({'dsid': dsid}):
             features.append([float(val) for val in a['feature']])
             labels.append(a['label'])
 
@@ -101,7 +101,6 @@ class PredictOneFromDatasetId(BaseHandler):
         data = json.loads(self.request.body.decode("utf-8"))    
         fvals = self.get_features_as_SFrame(data['feature'])
         dsid  = data['dsid']
-        print(f"CLF: {self.clf}")
 
         # load the model from the database (using pickle)
         # we are blocking tornado!! no!!
@@ -109,7 +108,7 @@ class PredictOneFromDatasetId(BaseHandler):
             self.write_json({"trained":False})
   
         else:
-            predLabel = self.clf['best'].predict(fvals);
+            predLabel = self.clf[dsid].predict(fvals);
             self.write_json({"prediction":str(predLabel)})
 
     def get_features_as_SFrame(self, vals):
@@ -123,61 +122,3 @@ class PredictOneFromDatasetId(BaseHandler):
 
         # send back the SFrame of the data
         return tc.SFrame(data=data)
-
-"""
-class UpdateChoosenModel(BaseHandler):
-    # save into clf['smv']
-
-    def get(self):
-
-        setting = json.loads(self.request.body.decode("utf-8"))
-        model_type = setting['type']
-        model_params = setting['params]
-
-        data = self.get_features_and_labels_as_SFrame(dsid)
-
-        if model_type == 'rfc': classifier = turicreate.random_forest_classifier
-        elif model_type == 'nne':
-        # fit the model to the data
-        acc = -1
-        if len(data)>0:
-            
-            if model_type == 'rfc': 
-                classifier = turicreate.random_forest_classifier.create()
-                self.clf['rfc'] = model
-
-            if model_type == 'knn':
-                classifier = turicreate.random_forest_classifier.create()
-                self.clf['knn'] = model
-
-            yhat = model.predict(data)
-            self.clf['best'] = model
-            acc = sum(yhat==data['target'])/float(len(data))
-            # save model for use later, if desired
-            model.save('../models/turi_model_dsid%d'%(dsid))
-            
-
-        # send back the resubstitution accuracy
-        # if training takes a while, we are blocking tornado!! No!!
-        self.write_json({"resubAccuracy":acc})
-
-    def get_features_and_labels_as_SFrame(self, dsid):
-        # create feature vectors from database
-        features=[]
-        labels=[]
-        for a in self.db.labeledinstances.find({"dsid":dsid}): 
-            features.append([float(val) for val in a['feature']])
-            labels.append(a['label'])
-
-        # convert to dictionary for tc
-        data = {'target':labels, 'sequence':np.array(features)}
-
-        # send back the SFrame of the data
-        return tc.SFrame(data=data)
-
-class PredictFromChoosenModel(BaseHandler):
-    def post(self):
-
-    def get_features_as_SFrame(self,vals):
-
-"""
