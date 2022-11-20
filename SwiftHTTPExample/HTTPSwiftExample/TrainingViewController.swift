@@ -9,16 +9,14 @@
 import UIKit
 import CoreMotion
 
-let SERVER_URL = "http://10.8.144.86:8000" // change this for your server name!!!
 
 class TrainingViewController: UIViewController, URLSessionDelegate {
+    let SERVER_URL = "http://10.8.144.86:8000" // change this for your server name!!!
 
     //MARK: Basic setup, not at all good / clean / completed.
     //MARK: Maybe make seperate models for handeling server / motion activity - Code reuseability.
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         startMotionUpdates()
     }
     
@@ -63,6 +61,46 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         startCalibration(newCalibrationType: CalibrationType.bop_it)
     }
     
+    @IBAction func PullItButton(_ sender: Any) {
+        startCalibration(newCalibrationType: CalibrationType.pull_it)
+    }
+    
+    @IBAction func TwistItButton(_ sender: Any) {
+        startCalibration(newCalibrationType: CalibrationType.twist_it)
+    }
+    @IBAction func UpdateModel(_ sender: Any) {
+        makeModel()
+    }
+    
+    func makeModel() {
+        
+        // create a GET request for server to update the ML model with current data
+        let baseURL = "\(SERVER_URL)/UpdateModel"
+        let query = "?dsid=\(self.dsid)"
+        
+        let getUrl = URL(string: baseURL+query)
+        let request: URLRequest = URLRequest(url: getUrl!)
+        let dataTask : URLSessionDataTask = self.session.dataTask(with: request,
+              completionHandler:{(data, response, error) in
+                // handle error!
+                if (error != nil) {
+                    if let res = response{
+                        print("Response:\n",res)
+                    }
+                }
+                else{
+                    let jsonDictionary = self.convertDataToDictionary(with: data)
+                    
+                    if let resubAcc = jsonDictionary["resubAccuracy"]{
+                        print("Resubstitution Accuracy is", resubAcc)
+                    }
+                }
+                                                                    
+        })
+        
+        dataTask.resume() // start the task
+        
+    }
     //Todo some animation or something, probably can do with button clicks or smthing
     var calibrationType:CalibrationType = .none {
         didSet{
@@ -158,41 +196,41 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     //MARK: Comm with Server
     func sendFeatures(_ array:[Double], withLabel label:CalibrationType){
         
-        print(array)
-        print(label)
-//        let baseURL = "\(SERVER_URL)/AddDataPoint"
-//        let postUrl = URL(string: "\(baseURL)")
-//
-//        // create a custom HTTP POST request
-//        var request = URLRequest(url: postUrl!)
-//
-//        // data to send in body of post request (send arguments as json)
-//        let jsonUpload:NSDictionary = ["feature":array,
-//                                       "label":"\(label)"]
-//
-//
-//        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
-//
-//        request.httpMethod = "POST"
-//        request.httpBody = requestBody
-//
-//        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
-//            completionHandler:{(data, response, error) in
-//                if(error != nil){
-//                    if let res = response{
-//                        print("Response:\n",res)
-//                    }
-//                }
-//                else{
-//                    let jsonDictionary = self.convertDataToDictionary(with: data)
-//
-//                    print(jsonDictionary["feature"]!)
-//                    print(jsonDictionary["label"]!)
-//                }
-//
-//        })
-//
-//        postTask.resume() // start the task
+        //print(array)
+        //print(label)
+        let baseURL = "\(SERVER_URL)/AddDataPoint"
+        let postUrl = URL(string: "\(baseURL)")
+
+        // create a custom HTTP POST request
+        var request = URLRequest(url: postUrl!)
+
+        // data to send in body of post request (send arguments as json)
+        let jsonUpload:NSDictionary = ["feature":array,
+                                       "label":"\(label)",
+                                       "dsid":self.dsid]
+
+
+        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+
+        request.httpMethod = "POST"
+        request.httpBody = requestBody
+
+        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+            completionHandler:{(data, response, error) in
+                if(error != nil){
+                    if let res = response{
+                        print("Response:\n",res)
+                    }
+                }
+                else{
+                    let jsonDictionary = self.convertDataToDictionary(with: data)
+                    print(jsonDictionary["feature"]!)
+                    print(jsonDictionary["label"]!)
+                }
+
+        })
+
+        postTask.resume() // start the task
     }
     
     //MARK: JSON Conversion Functions
@@ -223,5 +261,10 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
             }
             return NSDictionary() // just return empty
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.motion.stopDeviceMotionUpdates()
     }
 }
