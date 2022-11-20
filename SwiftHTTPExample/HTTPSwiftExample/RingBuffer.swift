@@ -8,7 +8,8 @@
 
 import UIKit
 
-let BUFFER_SIZE = 50
+// 2 seconds of data
+let BUFFER_SIZE = 200 * 2
 
 class RingBuffer: NSObject {
     
