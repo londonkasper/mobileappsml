@@ -16,7 +16,6 @@
 // to see what your public facing IP address is, the ip address can be used here
 
 // CHANGE THIS TO THE URL FOR YOUR LAPTOP
-let SERVER_URL = "http://10.0.1.6:8000" // change this for your server name!!!
 
 import UIKit
 import CoreMotion
@@ -216,36 +215,7 @@ class RootViewController: UIViewController, URLSessionDelegate {
         }
     }
     
-    func nextCalibrationStage(){
-        switch self.calibrationStage {
-        case .notCalibrating:
-            //start with up arrow
-            self.calibrationStage = .up
-            setDelayedWaitingToTrue(1.0)
-            break
-        case .up:
-            //go to right arrow
-            self.calibrationStage = .right
-            setDelayedWaitingToTrue(1.0)
-            break
-        case .right:
-            //go to down arrow
-            self.calibrationStage = .down
-            setDelayedWaitingToTrue(1.0)
-            break
-        case .down:
-            //go to left arrow
-            self.calibrationStage = .left
-            setDelayedWaitingToTrue(1.0)
-            break
-            
-        case .left:
-            //end calibration
-            self.calibrationStage = .notCalibrating
-            setDelayedWaitingToTrue(1.0)
-            break
-        }
-    }
+    
     
     func setDelayedWaitingToTrue(_ time:Double){
         DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: {
