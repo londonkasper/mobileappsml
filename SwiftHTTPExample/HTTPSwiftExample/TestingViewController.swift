@@ -45,6 +45,11 @@ class TestingViewController: UIViewController, URLSessionDelegate {
     //Hardcode as 0 for now, maybe in the final make multiple models for easy/medium/hard modes
     let dsid = 0
     
+    @IBOutlet weak var PredictionLabel: UILabel!
+    
+    @IBAction func MotionButton(_ sender: Any) {
+        self.startCalibration()
+    }
     // MARK: Class Properties with Observers
     enum CalibrationType {
         case none
@@ -92,7 +97,6 @@ class TestingViewController: UIViewController, URLSessionDelegate {
             let mag = fabs(accel.x)+fabs(accel.y)+fabs(accel.z)
             
             //print magnitude for testing
-            
             if mag > self.magValue {
                 // buffer up a bit more data and then notify of occurrence
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
@@ -107,37 +111,59 @@ class TestingViewController: UIViewController, URLSessionDelegate {
     
     //MARK: Calibration procedure
     func largeMotionEventOccurred(){
-        if(self.isCalibrating){
-            //send a labeled example
-            if(self.calibrationType != .none && self.isWaitingForMotionData)
-            {
-                self.isWaitingForMotionData = false
-                
-                // send data to the server with label
-//                sendFeatures(self.ringBuffer.getDataAsVector(),
-//                             withLabel: self.calibrationType)
+        if(self.isCalibrating && self.isWaitingForMotionData){
+            self.isWaitingForMotionData = false
+            self.isCalibrating = false
+            //Send Prediction
+                getPrediction(self.ringBuffer.getDataAsVector())
             }
-        }
-        else
-        {
-            //Tpdp no predictions in this controller, only training
-            if(self.isWaitingForMotionData)
-            {
-                self.isWaitingForMotionData = false
-                //predict a label
-                //getPrediction(self.ringBuffer.getDataAsVector())
-                // dont predict again for a bit
-                //setDelayedWaitingToTrue(2.0)
-            }
-        }
     }
+
+        func getPrediction(_ array:[Double]){
+            let baseURL = "\(SERVER_URL)/PredictOne"
+            let postUrl = URL(string: "\(baseURL)")
+    
+            // create a custom HTTP POST request
+            var request = URLRequest(url: postUrl!)
+    
+            // data to send in body of post request (send arguments as json)
+            let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid]
+    
+    
+            let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+    
+            request.httpMethod = "POST"
+            request.httpBody = requestBody
+    
+            let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+                                                                      completionHandler:{
+                            (data, response, error) in
+                            if(error != nil){
+                                if let res = response{
+                                    print("Response:\n",res)
+                                }
+                            }
+                            else{ // no error we are aware of
+                                let jsonDictionary = self.convertDataToDictionary(with: data)
+                                DispatchQueue.main.async{
+                                    self.PredictionLabel.text = jsonDictionary["prediction"]! as? String
+                                }
+                            }
+    
+            })
+    
+            postTask.resume() // start the task
+        }
     
     //MARK: Calibration
     //MARK: TODO MAKE CONNECTED TO BUTTON
-    func startCalibration(newCalibrationType:CalibrationType) {
+    func startCalibration() {
+        DispatchQueue.main.async{
+            self.PredictionLabel.text = "Waiting..."
+        }
         self.isWaitingForMotionData = false // dont do anything yet
-        self.calibrationType = newCalibrationType
-        //idk somethign ,proe
+        self.isCalibrating = true
+        setDelayedWaitingToTrue(1)
     }
     
     func setDelayedWaitingToTrue(_ time:Double){

@@ -162,17 +162,69 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="testing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VXo-pD-Rp8">
-                                <rect key="frame" x="166" y="85" width="53" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Testing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VXo-pD-Rp8">
+                                <rect key="frame" x="166" y="85" width="56" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Do A Motion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjZ-ce-nYz">
+                                <rect key="frame" x="145" y="144" width="94" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Options: Boop It, Pull It, Twist It" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ryZ-0e-vPl">
+                                <rect key="frame" x="74" y="173" width="237" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Motion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJE-3w-yBA">
+                                <rect key="frame" x="146.5" y="378" width="92" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="92" id="Jz4-R9-5ez"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prediction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EXH-0s-6Yw">
+                                <rect key="frame" x="148.5" y="407" width="78" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="svi-7p-bSd">
+                                <rect key="frame" x="139.5" y="228" width="106" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Send Motion"/>
+                                <connections>
+                                    <action selector="MotionButton:" destination="x18-6e-OGc" eventType="touchUpInside" id="GqS-43-bed"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="svi-7p-bSd" firstAttribute="top" secondItem="ryZ-0e-vPl" secondAttribute="bottom" constant="34" id="6lH-ds-yy6"/>
+                            <constraint firstItem="EXH-0s-6Yw" firstAttribute="centerX" secondItem="J4C-Vd-GOc" secondAttribute="centerX" id="Brj-Rm-jDs"/>
+                            <constraint firstItem="ryZ-0e-vPl" firstAttribute="centerX" secondItem="svi-7p-bSd" secondAttribute="centerX" id="Dwj-dU-2J7"/>
+                            <constraint firstItem="VYc-u5-Qx0" firstAttribute="top" secondItem="EXH-0s-6Yw" secondAttribute="bottom" constant="239" id="Gcp-Uz-fFa"/>
+                            <constraint firstItem="mjZ-ce-nYz" firstAttribute="top" secondItem="VXo-pD-Rp8" secondAttribute="bottom" constant="38" id="X4f-lZ-JZU"/>
+                            <constraint firstItem="ryZ-0e-vPl" firstAttribute="centerX" secondItem="KJE-3w-yBA" secondAttribute="centerX" id="iUb-Wa-SEJ"/>
+                            <constraint firstItem="VXo-pD-Rp8" firstAttribute="top" secondItem="T5h-eh-r5y" secondAttribute="bottom" constant="41" id="kV4-Vb-q9k"/>
+                            <constraint firstItem="mjZ-ce-nYz" firstAttribute="trailing" secondItem="KJE-3w-yBA" secondAttribute="trailing" id="kui-VZ-CDy"/>
+                            <constraint firstItem="EXH-0s-6Yw" firstAttribute="top" secondItem="KJE-3w-yBA" secondAttribute="bottom" constant="8" id="mHa-dT-hQB"/>
+                            <constraint firstItem="ryZ-0e-vPl" firstAttribute="top" secondItem="mjZ-ce-nYz" secondAttribute="bottom" constant="8" id="ml4-AQ-g7W"/>
+                            <constraint firstItem="mjZ-ce-nYz" firstAttribute="centerX" secondItem="ryZ-0e-vPl" secondAttribute="centerX" id="onb-yS-sSx"/>
+                            <constraint firstItem="VXo-pD-Rp8" firstAttribute="leading" secondItem="J4C-Vd-GOc" secondAttribute="leading" constant="166" id="xFp-2G-3tk"/>
+                            <constraint firstItem="ryZ-0e-vPl" firstAttribute="leading" secondItem="J4C-Vd-GOc" secondAttribute="leadingMargin" constant="58" id="xQo-LU-F79"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3Fh-5u-vbU"/>
+                    <connections>
+                        <outlet property="PredictionLabel" destination="EXH-0s-6Yw" id="aPD-Ii-dGM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qI3-1h-Zpa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -197,7 +249,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9il-gj-cam">
-                                <rect key="frame" x="19" y="535" width="61.5" height="14"/>
+                                <rect key="frame" x="19" y="518" width="61.5" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Bop it"/>
                                 <connections>
@@ -205,7 +257,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aj6-8s-ZOy">
-                                <rect key="frame" x="157.5" y="526.5" width="60" height="31"/>
+                                <rect key="frame" x="157.5" y="518" width="60" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="SxT-x5-c1e"/>
                                 </constraints>
@@ -216,7 +268,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="923-Ux-KMt">
-                                <rect key="frame" x="290.5" y="526.5" width="70.5" height="31"/>
+                                <rect key="frame" x="290.5" y="518" width="70.5" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Twist it"/>
                                 <connections>
