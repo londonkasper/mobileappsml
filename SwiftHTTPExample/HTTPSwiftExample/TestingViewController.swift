@@ -40,7 +40,7 @@ class TestingViewController: UIViewController, URLSessionDelegate {
     var isWaitingForMotionData = false
         
     //Minimum magnitude to record motion data
-    var magValue = 0.1
+    var magValue = 1.0
 
     //Hardcode as 0 for now, maybe in the final make multiple models for easy/medium/hard modes
     let dsid = 0
@@ -53,7 +53,7 @@ class TestingViewController: UIViewController, URLSessionDelegate {
     // MARK: Class Properties with Observers
     enum CalibrationType {
         case none
-        case bop_it
+        case boop_it
         case twist_it
         case pull_it
     }
@@ -63,7 +63,7 @@ class TestingViewController: UIViewController, URLSessionDelegate {
     var calibrationType:CalibrationType = .none {
         didSet{
             switch calibrationType {
-            case .bop_it:
+            case .boop_it:
                 self.isCalibrating = true
                 setDelayedWaitingToTrue(1.0)
                 break

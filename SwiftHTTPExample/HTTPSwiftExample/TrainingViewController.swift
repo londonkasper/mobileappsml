@@ -44,7 +44,7 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     var isWaitingForMotionData = false
         
     //Minimum magnitude to record motion data
-    var magValue = 0.1
+    var magValue = 1.0
 
     //Hardcode as 0 for now, maybe in the final make multiple models for easy/medium/hard modes
     let dsid = 0
@@ -52,13 +52,15 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     // MARK: Class Properties with Observers
     enum CalibrationType {
         case none
-        case bop_it
+        case boop_it
         case twist_it
         case pull_it
     }
     
+    @IBOutlet weak var StatusLabel: UILabel!
+    
     @IBAction func BopItButton(_ sender: Any) {
-        startCalibration(newCalibrationType: CalibrationType.bop_it)
+        startCalibration(newCalibrationType: CalibrationType.boop_it)
     }
     
     @IBAction func PullItButton(_ sender: Any) {
@@ -67,9 +69,6 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     
     @IBAction func TwistItButton(_ sender: Any) {
         startCalibration(newCalibrationType: CalibrationType.twist_it)
-    }
-    @IBAction func UpdateModel(_ sender: Any) {
-        makeModel()
     }
     
     func makeModel() {
@@ -105,7 +104,7 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     var calibrationType:CalibrationType = .none {
         didSet{
             switch calibrationType {
-            case .bop_it:
+            case .boop_it:
                 self.isCalibrating = true
                 setDelayedWaitingToTrue(1.0)
                 break
@@ -160,21 +159,13 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
             {
                 self.isWaitingForMotionData = false
                 
+                DispatchQueue.main.async {
+                    self.StatusLabel.text = "Sending Data to Server"
+                }
+                
                 // send data to the server with label
                 sendFeatures(self.ringBuffer.getDataAsVector(),
                              withLabel: self.calibrationType)
-            }
-        }
-        else
-        {
-            //Tpdp no predictions in this controller, only training
-            if(self.isWaitingForMotionData)
-            {
-                self.isWaitingForMotionData = false
-                //predict a label
-                //getPrediction(self.ringBuffer.getDataAsVector())
-                // dont predict again for a bit
-                //setDelayedWaitingToTrue(2.0)
             }
         }
     }
@@ -184,7 +175,9 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     func startCalibration(newCalibrationType:CalibrationType) {
         self.isWaitingForMotionData = false // dont do anything yet
         self.calibrationType = newCalibrationType
-        //idk somethign ,proe
+        DispatchQueue.main.async {
+            self.StatusLabel.text = "Training a " + "\(newCalibrationType)"
+        }
     }
     
     func setDelayedWaitingToTrue(_ time:Double){
@@ -231,6 +224,10 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         })
 
         postTask.resume() // start the task
+        
+        DispatchQueue.main.async {
+            self.StatusLabel.text = "Select a motion to train!"
+        }
     }
     
     //MARK: JSON Conversion Functions
@@ -266,5 +263,7 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.motion.stopDeviceMotionUpdates()
+        //Update model
+        makeModel()
     }
 }
