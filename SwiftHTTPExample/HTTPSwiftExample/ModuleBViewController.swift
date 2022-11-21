@@ -53,7 +53,8 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
         super.viewDidLoad()
         self.maxDepthForrest.text = "0"
         self.maxIterationsForrest.text = "5"
-        
+        self.maxDepthTree.text = "0"
+        self.maxIterationsTree.text = "5"
         startMotionUpdates()
     }
     
@@ -100,7 +101,8 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
             self.isWaitingForMotionData = false
             self.isCalibrating = false
             //Send Prediction
-                getPrediction(self.ringBuffer.getDataAsVector())
+                getRFCPrediction(self.ringBuffer.getDataAsVector())
+                getBTPrediction(self.ringBuffer.getDataAsVector())
             }
     }
     func startCalibration() {
@@ -150,13 +152,13 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
         }
     }
     
-    func getPrediction(_ array:[Double]){
-           let baseURL = "\(SERVER_URL)/PredictOne"
+    func getRFCPrediction(_ array:[Double]){
+           let baseURL = "\(SERVER_URL)/PredictGivenModel"
            let postUrl = URL(string: "\(baseURL)")
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
            // data to send in body of post request (send arguments as json
-           let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid]
+           let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid, "type":"rfc"]
            let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
            request.httpMethod = "POST"
            request.httpBody = requestBody
@@ -170,11 +172,40 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
                            else{ // no error we are aware of
                                let jsonDictionary = self.convertDataToDictionary(with: data)
                                //TODO UPDATE LABELS
-                               /**
+                               
                                 DispatchQueue.main.async{
-                                    self.PredictionLabel.text = jsonDictionary["prediction"]! as? String
+                                    self.forestPrediction.text = jsonDictionary["prediction"]! as? String
                                 }
-                                */
+                                
+                           }
+           })
+           postTask.resume() // start the task
+       }
+    func getBTPrediction(_ array:[Double]){
+           let baseURL = "\(SERVER_URL)/PredictGivenModel"
+           let postUrl = URL(string: "\(baseURL)")
+           // create a custom HTTP POST request
+           var request = URLRequest(url: postUrl!)
+           // data to send in body of post request (send arguments as json
+           let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid, "type":"btm"]
+           let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+           request.httpMethod = "POST"
+           request.httpBody = requestBody
+           let postTask : URLSessionDataTask = self.session.dataTask(with: request,completionHandler:{
+               (data, response, error) in
+                           if(error != nil){
+                               if let res = response{
+                                   print("Response:\n",res)
+                               }
+                           }
+                           else{ // no error we are aware of
+                               let jsonDictionary = self.convertDataToDictionary(with: data)
+                               //TODO UPDATE LABELS
+                               
+                                DispatchQueue.main.async{
+                                    self.treePrediction.text = jsonDictionary["prediction"]! as? String
+                                }
+                                
                            }
            })
            postTask.resume() // start the task
@@ -186,7 +217,7 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
     }
     
     @IBAction func predictionMotionButton(_ sender: Any) {
-        
+        self.startCalibration()
     }
     
     func makeRFCModel() {

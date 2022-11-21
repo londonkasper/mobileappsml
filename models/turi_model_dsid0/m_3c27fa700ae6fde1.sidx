@@ -4,16 +4,16 @@
 		"num_segments" : 1
 	},
 	"segment_files" : {
-		"0000" : "m_7391da7cb2ae7f37.0000"
+		"0000" : "m_3c27fa700ae6fde1.0000"
 	},
 	"columns" : [
 		{
 			"content_type" : "",
 			"metadata" : {
-				"__type__" : "9"
+				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "7"
+				"0000" : "4"
 			}
 		},
 		{
@@ -22,7 +22,16 @@
 				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "7"
+				"0000" : "4"
+			}
+		},
+		{
+			"content_type" : "",
+			"metadata" : {
+				"__type__" : "0"
+			},
+			"segment_sizes" : {
+				"0000" : "4"
 			}
 		}
 	]

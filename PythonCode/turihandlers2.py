@@ -164,7 +164,7 @@ class UpdateWithGivenModel(BaseHandler):
         # send back the SFrame of the data
         return tc.SFrame(data=data)
 
-class PredictGivenModel(BaseHandler):
+class PredictWithGivenModel(BaseHandler):
     def post(self):
         '''Predict the class of a sent feature vector
         '''

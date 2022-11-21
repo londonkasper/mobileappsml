@@ -175,7 +175,7 @@
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Max Iterations (5-20)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RTC-p1-YtU">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Iterations (5-20)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RTC-p1-YtU">
                                 <rect key="frame" x="16" y="386" width="162" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -221,6 +221,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="cBO-9G-6UM" firstAttribute="top" secondItem="EQh-cL-kFm" secondAttribute="bottom" constant="8" id="1oS-1X-Wf7"/>
+                            <constraint firstItem="T4j-t5-DVm" firstAttribute="leading" secondItem="RTC-p1-YtU" secondAttribute="trailing" constant="33" id="4GZ-ri-ZYt"/>
                             <constraint firstItem="h4Z-0K-Mhd" firstAttribute="top" secondItem="qud-TK-oKe" secondAttribute="bottom" constant="8" id="4xm-bN-Xnh"/>
                             <constraint firstItem="8Ff-4Y-zP8" firstAttribute="top" secondItem="XEv-R8-pK7" secondAttribute="bottom" constant="8" id="5WS-r4-rFk"/>
                             <constraint firstItem="RTC-p1-YtU" firstAttribute="top" secondItem="cBO-9G-6UM" secondAttribute="bottom" constant="18" id="5hO-Vq-fpQ"/>
