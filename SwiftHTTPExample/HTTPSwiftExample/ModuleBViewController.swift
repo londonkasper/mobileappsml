@@ -13,11 +13,19 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
     let SERVER_URL = "http://10.8.144.86:8000" // change this for your server name!!!
 
     @IBOutlet weak var forestPrediction: UILabel!
-    @IBOutlet weak var maxIterations: UITextField!
-    @IBOutlet weak var maxDepth: UITextField!
+    @IBOutlet weak var maxIterations: UILabel!
+    @IBOutlet weak var maxDepth: UILabel!
+    @IBAction func iterationStepper(_ sender: UIStepper) {
+        self.maxIterations.text = String(Int(sender.value))
+    }
+    @IBAction func depthStepper(_ sender: UIStepper) {
+        self.maxDepth.text = String(Int(sender.value))
+    }
+    
     
     @IBOutlet weak var knnPrediction: UILabel!
     @IBOutlet weak var distanceType: UIPickerView!
+    
     
     let operationQueue = OperationQueue()
     let motionOperationQueue = OperationQueue()
@@ -37,6 +45,9 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.maxDepth.text = "0"
+        self.maxIterations.text = "5"
+        
         startMotionUpdates()
     }
     
