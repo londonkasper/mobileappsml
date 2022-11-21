@@ -4,9 +4,27 @@
 		"num_segments" : 1
 	},
 	"segment_files" : {
-		"0000" : "m_e26a101f3ae9287.0000"
+		"0000" : "m_8c6aaf9838526ceb.0000"
 	},
 	"columns" : [
+		{
+			"content_type" : "",
+			"metadata" : {
+				"__type__" : "2"
+			},
+			"segment_sizes" : {
+				"0000" : "10"
+			}
+		},
+		{
+			"content_type" : "",
+			"metadata" : {
+				"__type__" : "2"
+			},
+			"segment_sizes" : {
+				"0000" : "10"
+			}
+		},
 		{
 			"content_type" : "",
 			"metadata" : {

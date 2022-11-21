@@ -123,23 +123,24 @@ class PredictOneFromDatasetId(BaseHandler):
         # send back the SFrame of the data
         return tc.SFrame(data=data)
 
-class UpdateGivenModel(BaseHandler):
+class UpdateWithGivenModel(BaseHandler):
     async def post(self):
-        inputs = json.loads(self.request.body.decode("utf-8"))    
+        print(self.request.body)
+        inputs = json.loads(self.request.body.decode("utf-8"))   
         data = await self.get_features_and_labels_as_SFrame(inputs['dsid'])
-        
         model_type = inputs['type']
 
         if len(data)>0:
+            iters = inputs['max_iters']
+            depth = inputs['max_depth']
             if model_type == 'rfc':
-                iters = inputs['max_iters']
-                depth = inputs['max_depth']
-                if depth == 0:  model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters)
+                if depth == "0": model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters)
                 else: model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters,max_depth=depth)
-            elif model_type == 'knn':
-                distance = inputs['distance']
-                model = tc.nearest_neighbors.create(data,target='target',verbose=0,distance=distance)
+            elif model_type == 'btm':
+                if depth == "0": model = tc.boosted_trees_classifier.create(data,target='target',verbose=0,max_iterations=iters)
+                else: model = tc.boosted_trees_classifier.create(data,target='target',verbose=0,max_iterations=iters,max_depth=depth)
 
+                model = tc.boosted_trees_classifier.create(data,target='target',verbose=0)
             yhat = model.predict(data)
             self.clf[model_type] = model
             acc = sum(yhat==data['target'])/float(len(data))
@@ -159,6 +160,35 @@ class UpdateGivenModel(BaseHandler):
 
         # convert to dictionary for tc
         data = {'target':labels, 'sequence':np.array(features)}
+
+        # send back the SFrame of the data
+        return tc.SFrame(data=data)
+
+class PredictGivenModel(BaseHandler):
+    def post(self):
+        '''Predict the class of a sent feature vector
+        '''
+        data = json.loads(self.request.body.decode("utf-8"))    
+        fvals = self.get_features_as_SFrame(data['feature'])
+        model_type  = data['type']
+
+        # load the model from the database (using pickle)
+        # we are blocking tornado!! no!!
+        if model_type not in self.clf:
+            self.write_json({"trained":False})
+  
+        else:
+            predLabel = self.clf[model_type].predict(fvals);
+            self.write_json({"prediction":str(predLabel)})
+
+    def get_features_as_SFrame(self, vals):
+        # create feature vectors from array input
+        # convert to dictionary of arrays for tc
+
+        tmp = [float(val) for val in vals]
+        tmp = np.array(tmp)
+        tmp = tmp.reshape((1,-1))
+        data = {'sequence':tmp}
 
         # send back the SFrame of the data
         return tc.SFrame(data=data)

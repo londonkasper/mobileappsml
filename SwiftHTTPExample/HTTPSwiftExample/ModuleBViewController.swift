@@ -9,22 +9,29 @@
 import UIKit
 import CoreMotion
 
-class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewDataSource,  UIPickerViewDelegate{
+class ModuleBViewController: UIViewController, URLSessionDelegate{
     let SERVER_URL = "http://10.8.144.86:8000" // change this for your server name!!!
 
     @IBOutlet weak var forestPrediction: UILabel!
-    @IBOutlet weak var maxIterations: UILabel!
-    @IBOutlet weak var maxDepth: UILabel!
-    @IBAction func iterationStepper(_ sender: UIStepper) {
-        self.maxIterations.text = String(Int(sender.value))
+    @IBOutlet weak var maxIterationsForrest: UILabel!
+    @IBOutlet weak var maxDepthForrest: UILabel!
+    @IBAction func iterationStepperForrest(_ sender: UIStepper) {
+        self.maxIterationsForrest.text = String(Int(sender.value))
     }
-    @IBAction func depthStepper(_ sender: UIStepper) {
-        self.maxDepth.text = String(Int(sender.value))
+    @IBAction func depthStepperForrest(_ sender: UIStepper) {
+        self.maxDepthForrest.text = String(Int(sender.value))
     }
     
     
-    @IBOutlet weak var knnPrediction: UILabel!
-    @IBOutlet weak var distanceType: UIPickerView!
+    @IBOutlet weak var boostedPrediction: UILabel!
+    @IBOutlet weak var maxIterationsTree: UILabel!
+    @IBOutlet weak var maxDepthTree: UILabel!
+    @IBAction func iterationStepperTree(_ sender: UIStepper) {
+        self.maxIterationsTree.text = String(Int(sender.value))
+    }
+    @IBAction func depthStepperTree(_ sender: UIStepper) {
+        self.maxDepthTree.text = String(Int(sender.value))
+    }
     
     
     let operationQueue = OperationQueue()
@@ -45,10 +52,8 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.maxDepth.text = "0"
-        self.maxIterations.text = "5"
-        distanceType.dataSource = self
-        distanceType.delegate = self
+        self.maxDepthForrest.text = "0"
+        self.maxIterationsForrest.text = "5"
         
         startMotionUpdates()
     }
@@ -102,7 +107,7 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
     func startCalibration() {
         DispatchQueue.main.async{
             self.forestPrediction.text = "Waiting..."
-            self.knnPrediction.text = "Waiting..."
+            self.boostedPrediction.text = "Waiting..."
         }
         self.isWaitingForMotionData = false // dont do anything yet
         self.isCalibrating = true
@@ -178,7 +183,7 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
     
     @IBAction func updateModelButton(_ sender: Any) {
         makeRFCModel();
-        makeKNNModel();
+        makeBTModel();
     }
     
     func makeRFCModel() {
@@ -189,11 +194,14 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
            var request = URLRequest(url: postUrl!)
            // data to send in body of post request (send arguments as json)
            let jsonUpload:NSDictionary = ["type":"rfc",
-                                          "max_iters":maxIterations.text,
-                                          "max_depth":maxDepth.text,
+                                          "max_iters":maxIterationsForrest.text,
+                                          "max_depth":maxDepthForrest.text,
                                           "dsid":dsid]
-        print(jsonUpload)
-           let _:Data? = self.convertDictionaryToData(with:jsonUpload)
+           let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+           
+           request.httpMethod = "POST"
+           request.httpBody = requestBody
+
            let postTask : URLSessionDataTask = self.session.dataTask(with: request,
                completionHandler:{(data, response, error) in
                    if(error != nil){
@@ -207,21 +215,24 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
            })
            postTask.resume() // start the task
        }
-       lazy private var data = ["Euclidean", "Squared Euclidean", "Manhattan", "Levenshtein", "Jaccard", "Weighted Jaccard", "Cosine", "Transformed Dot Product"]
+       lazy private var data = ["euclidean", "squared_euclidean", "manhattan", "levenshtein", "jaccard", "weighted_jaccard", "cosine", "transformed_dot_product"]
 
-       func makeKNNModel() {
+       func makeBTModel() {
            // create a GET request for server to update the ML model with current data
            let baseURL = "\(SERVER_URL)/UpdateGivenModel"
            let postUrl = URL(string: "\(baseURL)")
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
-           let distance = data[distanceType.selectedRow(inComponent: 0)]
            // data to send in body of post request (send arguments as json)
-           let jsonUpload:NSDictionary = ["type":"knn",
-                                          "distance":distance,
+           let jsonUpload:NSDictionary = ["type":"btm",
+                                          "max_iters":maxIterationsTree.text,
+                                          "max_depth":maxDepthTree.text,
                                           "dsid":dsid]
-           print(jsonUpload)
-           let _:Data? = self.convertDictionaryToData(with:jsonUpload)
+
+           let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+           request.httpMethod = "POST"
+           request.httpBody = requestBody
+           
            let postTask : URLSessionDataTask = self.session.dataTask(with: request,
                completionHandler:{(data, response, error) in
                    if(error != nil){
@@ -234,23 +245,6 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
                    }
            })
            postTask.resume() // start the task
-       }
-
-       func numberOfComponents(in pickerView: UIPickerView) -> Int {
-           return 1
-       }
-
-       func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-           return data.count
-       }
-
-       
-
-       func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-           if let title = data[row] as? String {
-               return title
-           }
-           return ""
        }
     
     override func viewDidDisappear(_ animated: Bool) {
