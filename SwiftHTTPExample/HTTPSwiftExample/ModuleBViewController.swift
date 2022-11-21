@@ -147,8 +147,6 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
     }
     
     func getPrediction(_ array:[Double]){
-           self.makeRFCModel()
-           self.makeKNNModel()
            let baseURL = "\(SERVER_URL)/PredictOne"
            let postUrl = URL(string: "\(baseURL)")
            // create a custom HTTP POST request
@@ -178,16 +176,23 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
            postTask.resume() // start the task
        }
     
-       func makeRFCModel() {
+    @IBAction func updateModelButton(_ sender: Any) {
+        makeRFCModel();
+        makeKNNModel();
+    }
+    
+    func makeRFCModel() {
            // create a GET request for server to update the ML model with current data
-           let baseURL = "\(SERVER_URL)/UpdateWithModel"
+           let baseURL = "\(SERVER_URL)/UpdateGivenModel"
            let postUrl = URL(string: "\(baseURL)")
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
            // data to send in body of post request (send arguments as json)
            let jsonUpload:NSDictionary = ["type":"rfc",
                                           "max_iters":maxIterations.text,
-                                          "max_depth":maxDepth.text]
+                                          "max_depth":maxDepth.text,
+                                          "dsid":dsid]
+        print(jsonUpload)
            let _:Data? = self.convertDictionaryToData(with:jsonUpload)
            let postTask : URLSessionDataTask = self.session.dataTask(with: request,
                completionHandler:{(data, response, error) in
@@ -206,14 +211,16 @@ class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewD
 
        func makeKNNModel() {
            // create a GET request for server to update the ML model with current data
-           let baseURL = "\(SERVER_URL)/UpdateWithModel"
+           let baseURL = "\(SERVER_URL)/UpdateGivenModel"
            let postUrl = URL(string: "\(baseURL)")
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
            let distance = data[distanceType.selectedRow(inComponent: 0)]
            // data to send in body of post request (send arguments as json)
            let jsonUpload:NSDictionary = ["type":"knn",
-                                          "distance":distance]
+                                          "distance":distance,
+                                          "dsid":dsid]
+           print(jsonUpload)
            let _:Data? = self.convertDictionaryToData(with:jsonUpload)
            let postTask : URLSessionDataTask = self.session.dataTask(with: request,
                completionHandler:{(data, response, error) in

@@ -42,15 +42,16 @@ class Application(tornado.web.Application):
         '''
 
         handlers = [(r"/[/]?", BaseHandler),
-                    (r"/Handlers[/]?",        th.PrintHandlers),
-                    (r"/AddDataPoint[/]?",    th.UploadLabeledDatapointHandler),
-                    (r"/GetNewDatasetId[/]?", th.RequestNewDatasetId),
-                    (r"/UpdateModel[/]?",     th.UpdateModelForDatasetId),     
-                    (r"/PredictOne[/]?",      th.PredictOneFromDatasetId),  
-                    (r"/GetExample[/]?",      eh.TestHandler),
-                    (r"/DoPost[/]?",          eh.PostHandlerAsGetArguments),
-                    (r"/PostWithJson[/]?",    eh.JSONPostHandler),
-                    (r"/MSLC[/]?",            eh.MSLC),             
+                    (r"/Handlers[/]?",          th.PrintHandlers),
+                    (r"/AddDataPoint[/]?",      th.UploadLabeledDatapointHandler),
+                    (r"/GetNewDatasetId[/]?",   th.RequestNewDatasetId),
+                    (r"/UpdateModel[/]?",       th.UpdateModelForDatasetId),
+                     (r"/UpdateGivenModel[/]?", th.UpdateModelForDatasetId),        
+                    (r"/PredictOne[/]?",        th.PredictOneFromDatasetId),  
+                    (r"/GetExample[/]?",        eh.TestHandler),
+                    (r"/DoPost[/]?",            eh.PostHandlerAsGetArguments),
+                    (r"/PostWithJson[/]?",      eh.JSONPostHandler),
+                    (r"/MSLC[/]?",              eh.MSLC),             
                     ]
 
         self.handlers_string = str(handlers)

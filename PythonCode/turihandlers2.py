@@ -70,7 +70,7 @@ class UpdateModelForDatasetId(BaseHandler):
             
             model = tc.classifier.create(data,target='target',verbose=0)# training
             yhat = model.predict(data)
-            self.clf[dsid] = model
+            self.clf['best'] = model
             acc = sum(yhat==data['target'])/float(len(data))
             # save model for use later, if desired
             model.save('../models/turi_model_dsid%d'%(dsid))
@@ -104,11 +104,11 @@ class PredictOneFromDatasetId(BaseHandler):
 
         # load the model from the database (using pickle)
         # we are blocking tornado!! no!!
-        if dsid not in self.clf:
+        if 'best' not in self.clf:
             self.write_json({"trained":False})
   
         else:
-            predLabel = self.clf[dsid].predict(fvals);
+            predLabel = self.clf['best'].predict(fvals);
             self.write_json({"prediction":str(predLabel)})
 
     def get_features_as_SFrame(self, vals):
@@ -119,6 +119,46 @@ class PredictOneFromDatasetId(BaseHandler):
         tmp = np.array(tmp)
         tmp = tmp.reshape((1,-1))
         data = {'sequence':tmp}
+
+        # send back the SFrame of the data
+        return tc.SFrame(data=data)
+
+class UpdateGivenModel(BaseHandler):
+    async def post(self):
+        inputs = json.loads(self.request.body.decode("utf-8"))    
+        data = await self.get_features_and_labels_as_SFrame(inputs['dsid'])
+        
+        model_type = inputs['type']
+
+        if len(data)>0:
+            if model_type == 'rfc':
+                iters = inputs['max_iters']
+                depth = inputs['max_depth']
+                if depth == 0:  model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters)
+                else: model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters,max_depth=depth)
+            elif model_type == 'knn':
+                distance = inputs['distance']
+                model = tc.nearest_neighbors.create(data,target='target',verbose=0,distance=distance)
+
+            yhat = model.predict(data)
+            self.clf[model_type] = model
+            acc = sum(yhat==data['target'])/float(len(data))
+            
+
+        # send back the resubstitution accuracy
+        # if training takes a while, we are blocking tornado!! No!!
+        self.write_json({"resubAccuracy":acc})
+    
+    async def get_features_and_labels_as_SFrame(self, dsid):
+        # create feature vectors from database
+        features=[]
+        labels=[]
+        async for a in self.db.labeledinstances.find({'dsid': dsid}):
+            features.append([float(val) for val in a['feature']])
+            labels.append(a['label'])
+
+        # convert to dictionary for tc
+        data = {'target':labels, 'sequence':np.array(features)}
 
         # send back the SFrame of the data
         return tc.SFrame(data=data)
