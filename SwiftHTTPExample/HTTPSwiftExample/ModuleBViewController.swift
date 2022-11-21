@@ -9,7 +9,7 @@
 import UIKit
 import CoreMotion
 
-class ModuleBViewController: UIViewController, URLSessionDelegate{
+class ModuleBViewController: UIViewController, URLSessionDelegate, UIPickerViewDataSource,  UIPickerViewDelegate{
     let SERVER_URL = "http://10.8.144.86:8000" // change this for your server name!!!
 
     @IBOutlet weak var forestPrediction: UILabel!
@@ -47,6 +47,8 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
         super.viewDidLoad()
         self.maxDepth.text = "0"
         self.maxIterations.text = "5"
+        distanceType.dataSource = self
+        distanceType.delegate = self
         
         startMotionUpdates()
     }
@@ -145,43 +147,104 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
     }
     
     func getPrediction(_ array:[Double]){
-        let baseURL = "\(SERVER_URL)/PredictOne"
-        let postUrl = URL(string: "\(baseURL)")
+           self.makeRFCModel()
+           self.makeKNNModel()
+           let baseURL = "\(SERVER_URL)/PredictOne"
+           let postUrl = URL(string: "\(baseURL)")
+           // create a custom HTTP POST request
+           var request = URLRequest(url: postUrl!)
+           // data to send in body of post request (send arguments as json
+           let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid]
+           let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+           request.httpMethod = "POST"
+           request.httpBody = requestBody
+           let postTask : URLSessionDataTask = self.session.dataTask(with: request,completionHandler:{
+               (data, response, error) in
+                           if(error != nil){
+                               if let res = response{
+                                   print("Response:\n",res)
+                               }
+                           }
+                           else{ // no error we are aware of
+                               let jsonDictionary = self.convertDataToDictionary(with: data)
+                               //TODO UPDATE LABELS
+                               /**
+                                DispatchQueue.main.async{
+                                    self.PredictionLabel.text = jsonDictionary["prediction"]! as? String
+                                }
+                                */
+                           }
+           })
+           postTask.resume() // start the task
+       }
+    
+       func makeRFCModel() {
+           // create a GET request for server to update the ML model with current data
+           let baseURL = "\(SERVER_URL)/UpdateWithModel"
+           let postUrl = URL(string: "\(baseURL)")
+           // create a custom HTTP POST request
+           var request = URLRequest(url: postUrl!)
+           // data to send in body of post request (send arguments as json)
+           let jsonUpload:NSDictionary = ["type":"rfc",
+                                          "max_iters":maxIterations.text,
+                                          "max_depth":maxDepth.text]
+           let _:Data? = self.convertDictionaryToData(with:jsonUpload)
+           let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+               completionHandler:{(data, response, error) in
+                   if(error != nil){
+                       if let res = response{
+                           print("Response:\n",res)
+                       }
+                   }
+                   else{
+                       let jsonDictionary = self.convertDataToDictionary(with: data)
+                   }
+           })
+           postTask.resume() // start the task
+       }
+       lazy private var data = ["Euclidean", "Squared Euclidean", "Manhattan", "Levenshtein", "Jaccard", "Weighted Jaccard", "Cosine", "Transformed Dot Product"]
 
-        // create a custom HTTP POST request
-        var request = URLRequest(url: postUrl!)
+       func makeKNNModel() {
+           // create a GET request for server to update the ML model with current data
+           let baseURL = "\(SERVER_URL)/UpdateWithModel"
+           let postUrl = URL(string: "\(baseURL)")
+           // create a custom HTTP POST request
+           var request = URLRequest(url: postUrl!)
+           let distance = data[distanceType.selectedRow(inComponent: 0)]
+           // data to send in body of post request (send arguments as json)
+           let jsonUpload:NSDictionary = ["type":"knn",
+                                          "distance":distance]
+           let _:Data? = self.convertDictionaryToData(with:jsonUpload)
+           let postTask : URLSessionDataTask = self.session.dataTask(with: request,
+               completionHandler:{(data, response, error) in
+                   if(error != nil){
+                       if let res = response{
+                           print("Response:\n",res)
+                       }
+                   }
+                   else{
+                       let jsonDictionary = self.convertDataToDictionary(with: data)
+                   }
+           })
+           postTask.resume() // start the task
+       }
 
-        // data to send in body of post request (send arguments as json)
-        let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid]
+       func numberOfComponents(in pickerView: UIPickerView) -> Int {
+           return 1
+       }
 
+       func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+           return data.count
+       }
 
-        let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
+       
 
-        request.httpMethod = "POST"
-        request.httpBody = requestBody
-
-        let postTask : URLSessionDataTask = self.session.dataTask(with: request,
-                                                                  completionHandler:{
-                        (data, response, error) in
-                        if(error != nil){
-                            if let res = response{
-                                print("Response:\n",res)
-                            }
-                        }
-                        else{ // no error we are aware of
-                            let jsonDictionary = self.convertDataToDictionary(with: data)
-                            //TODO UPDATE LABELS
-                            /**
-                             DispatchQueue.main.async{
-                                 self.PredictionLabel.text = jsonDictionary["prediction"]! as? String
-                             }
-                             */
-                        }
-
-        })
-
-        postTask.resume() // start the task
-    }
+       func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+           if let title = data[row] as? String {
+               return title
+           }
+           return ""
+       }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
