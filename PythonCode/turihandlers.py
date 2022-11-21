@@ -25,7 +25,7 @@ class PrintHandlers(BaseHandler):
         self.write(self.application.handlers_string.replace('),','),\n'))
 
 class UploadLabeledDatapointHandler(BaseHandler):
-    def post(self):
+    async def post(self):
         '''Save data point and class label to database
         '''
         data = json.loads(self.request.body.decode("utf-8"))
@@ -35,7 +35,7 @@ class UploadLabeledDatapointHandler(BaseHandler):
         label = data['label']
         sess  = data['dsid']
 
-        dbid = self.db.labeledinstances.insert_one(
+        dbid = await self.db.labeledinstances.insert_one(
             {"feature":fvals,"label":label,"dsid":sess}
             );
         self.write_json({"id":str(dbid),
@@ -45,10 +45,10 @@ class UploadLabeledDatapointHandler(BaseHandler):
             "label":label})
 
 class RequestNewDatasetId(BaseHandler):
-    def get(self):
+    async def get(self):
         '''Get a new dataset ID for building a new dataset
         '''
-        a = self.db.labeledinstances.find_one(sort=[("dsid", -1)])
+        a = await self.db.labeledinstances.find_one(sort=[("dsid", -1)])
         if a == None:
             newSessionId = 1
         else:
@@ -56,12 +56,12 @@ class RequestNewDatasetId(BaseHandler):
         self.write_json({"dsid":newSessionId})
 
 class UpdateModelForDatasetId(BaseHandler):
-    def get(self):
+    async def get(self):
         '''Train a new model (or update) for given dataset ID
         '''
         dsid = self.get_int_arg("dsid",default=0)
 
-        data = self.get_features_and_labels_as_SFrame(dsid)
+        data = await self.get_features_and_labels_as_SFrame(dsid)
 
         # fit the model to the data
         acc = -1
@@ -80,11 +80,11 @@ class UpdateModelForDatasetId(BaseHandler):
         # if training takes a while, we are blocking tornado!! No!!
         self.write_json({"resubAccuracy":acc})
 
-    def get_features_and_labels_as_SFrame(self, dsid):
+    async def get_features_and_labels_as_SFrame(self, dsid):
         # create feature vectors from database
         features=[]
         labels=[]
-        for a in self.db.labeledinstances.find({"dsid":dsid}): 
+        async for a in self.db.labeledinstances.find({'dsid': dsid}):
             features.append([float(val) for val in a['feature']])
             labels.append(a['label'])
 
@@ -101,11 +101,10 @@ class PredictOneFromDatasetId(BaseHandler):
         data = json.loads(self.request.body.decode("utf-8"))    
         fvals = self.get_features_as_SFrame(data['feature'])
         dsid  = data['dsid']
-        print(f"CLF: {self.clf}")
 
         # load the model from the database (using pickle)
         # we are blocking tornado!! no!!
-        if dsid not in self.clf:
+        if 'best' not in self.clf:
             self.write_json({"trained":False})
   
         else:
@@ -124,48 +123,38 @@ class PredictOneFromDatasetId(BaseHandler):
         # send back the SFrame of the data
         return tc.SFrame(data=data)
 
-"""
-class UpdateChoosenModel(BaseHandler):
-    # save into clf['smv']
+class UpdateWithGivenModel(BaseHandler):
+    async def post(self):
+        print(self.request.body)
+        inputs = json.loads(self.request.body.decode("utf-8"))   
+        data = await self.get_features_and_labels_as_SFrame(inputs['dsid'])
+        model_type = inputs['type']
 
-    def get(self):
-
-        setting = json.loads(self.request.body.decode("utf-8"))
-        model_type = setting['type']
-        model_params = setting['params]
-
-        data = self.get_features_and_labels_as_SFrame(dsid)
-
-        if model_type == 'rfc': classifier = turicreate.random_forest_classifier
-        elif model_type == 'nne':
-        # fit the model to the data
-        acc = -1
         if len(data)>0:
-            
-            if model_type == 'rfc': 
-                classifier = turicreate.random_forest_classifier.create()
-                self.clf['rfc'] = model
+            iters = inputs['max_iters']
+            depth = inputs['max_depth']
+            if model_type == 'rfc':
+                if depth == "0": model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters)
+                else: model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters,max_depth=depth)
+            elif model_type == 'btm':
+                if depth == "0": model = tc.boosted_trees_classifier.create(data,target='target',verbose=0,max_iterations=iters)
+                else: model = tc.boosted_trees_classifier.create(data,target='target',verbose=0,max_iterations=iters,max_depth=depth)
 
-            if model_type == 'knn':
-                classifier = turicreate.random_forest_classifier.create()
-                self.clf['knn'] = model
-
+                model = tc.boosted_trees_classifier.create(data,target='target',verbose=0)
             yhat = model.predict(data)
-            self.clf['best'] = model
+            self.clf[model_type] = model
             acc = sum(yhat==data['target'])/float(len(data))
-            # save model for use later, if desired
-            model.save('../models/turi_model_dsid%d'%(dsid))
             
 
         # send back the resubstitution accuracy
         # if training takes a while, we are blocking tornado!! No!!
         self.write_json({"resubAccuracy":acc})
-
-    def get_features_and_labels_as_SFrame(self, dsid):
+    
+    async def get_features_and_labels_as_SFrame(self, dsid):
         # create feature vectors from database
         features=[]
         labels=[]
-        for a in self.db.labeledinstances.find({"dsid":dsid}): 
+        async for a in self.db.labeledinstances.find({'dsid': dsid}):
             features.append([float(val) for val in a['feature']])
             labels.append(a['label'])
 
@@ -175,9 +164,31 @@ class UpdateChoosenModel(BaseHandler):
         # send back the SFrame of the data
         return tc.SFrame(data=data)
 
-class PredictFromChoosenModel(BaseHandler):
+class PredictWithGivenModel(BaseHandler):
     def post(self):
+        '''Predict the class of a sent feature vector
+        '''
+        data = json.loads(self.request.body.decode("utf-8"))    
+        fvals = self.get_features_as_SFrame(data['feature'])
+        model_type  = data['type']
 
-    def get_features_as_SFrame(self,vals):
+        # load the model from the database (using pickle)
+        # we are blocking tornado!! no!!
+        if model_type not in self.clf:
+            self.write_json({"trained":False})
+  
+        else:
+            predLabel = self.clf[model_type].predict(fvals);
+            self.write_json({"prediction":str(predLabel)})
 
-"""
+    def get_features_as_SFrame(self, vals):
+        # create feature vectors from array input
+        # convert to dictionary of arrays for tc
+
+        tmp = [float(val) for val in vals]
+        tmp = np.array(tmp)
+        tmp = tmp.reshape((1,-1))
+        data = {'sequence':tmp}
+
+        # send back the SFrame of the data
+        return tc.SFrame(data=data)

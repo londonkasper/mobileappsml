@@ -70,6 +70,16 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
             delegateQueue:self.operationQueue)
     }()
     
+    // updates both models with any new params from user
+    @IBAction func updateModelButton(_ sender: Any) {
+        makeRFCModel();
+        makeBTModel();
+    }
+    
+    @IBAction func predictionMotionButton(_ sender: Any) {
+        self.startCalibration()
+    }
+    
     func startMotionUpdates(){
         // some internal inconsistency here: we need to ask the device manager for device
         
@@ -100,7 +110,7 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
         if(self.isCalibrating && self.isWaitingForMotionData){
             self.isWaitingForMotionData = false
             self.isCalibrating = false
-            //Send Prediction
+                // gets prediction from both Random Forest and Boosted Trees Models
                 getRFCPrediction(self.ringBuffer.getDataAsVector())
                 getBTPrediction(self.ringBuffer.getDataAsVector())
             }
@@ -157,7 +167,8 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
            let postUrl = URL(string: "\(baseURL)")
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
-           // data to send in body of post request (send arguments as json
+           // data to send in body of post request (send arguments as json)
+           // includes type  of  model to train
            let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid, "type":"rfc"]
            let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
            request.httpMethod = "POST"
@@ -171,10 +182,16 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
                            }
                            else{ // no error we are aware of
                                let jsonDictionary = self.convertDataToDictionary(with: data)
-                               //TODO UPDATE LABELS
                                
                                 DispatchQueue.main.async{
-                                    self.forestPrediction.text = jsonDictionary["prediction"]! as? String
+                                    // server sets trained to false if prediction is called without a model, otherwise key does not exist
+                                    // prevents app from breaking if model is not trained
+                                    if jsonDictionary["trained"] != nil {
+                                        self.forestPrediction.text = "Please Train Model"
+                                    }
+                                    else {
+                                        self.forestPrediction.text = jsonDictionary["prediction"]! as? String
+                                    }
                                 }
                                 
                            }
@@ -186,7 +203,8 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
            let postUrl = URL(string: "\(baseURL)")
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
-           // data to send in body of post request (send arguments as json
+           // data to send in body of post request (send arguments as json)
+           // includes type  of  model to train
            let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid, "type":"btm"]
            let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
            request.httpMethod = "POST"
@@ -200,25 +218,22 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
                            }
                            else{ // no error we are aware of
                                let jsonDictionary = self.convertDataToDictionary(with: data)
-                               //TODO UPDATE LABELS
                                
                                 DispatchQueue.main.async{
-                                    self.treePrediction.text = jsonDictionary["prediction"]! as? String
+                                    // server sets trained to false if prediction is called without a model, otherwise key does not exist
+                                    // prevents app from breaking if model is not trained
+                                    if jsonDictionary["trained"] != nil {
+                                        self.treePrediction.text = "Please Train Model"
+                                    }
+                                    else {
+                                        self.treePrediction.text = jsonDictionary["prediction"]! as? String
+                                    }
                                 }
                                 
                            }
            })
            postTask.resume() // start the task
        }
-    
-    @IBAction func updateModelButton(_ sender: Any) {
-        makeRFCModel();
-        makeBTModel();
-    }
-    
-    @IBAction func predictionMotionButton(_ sender: Any) {
-        self.startCalibration()
-    }
     
     func makeRFCModel() {
            // create a GET request for server to update the ML model with current data
@@ -227,9 +242,10 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
            // data to send in body of post request (send arguments as json)
+           //  includes model type and user submitted params
            let jsonUpload:NSDictionary = ["type":"rfc",
-                                          "max_iters":maxIterationsForrest.text,
-                                          "max_depth":maxDepthForrest.text,
+                                          "max_iters":maxIterationsForrest.text!,
+                                          "max_depth":maxDepthForrest.text!,
                                           "dsid":dsid]
            let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
            
@@ -245,6 +261,9 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
                    }
                    else{
                        let jsonDictionary = self.convertDataToDictionary(with: data)
+                       if let resubAcc = jsonDictionary["resubAccuracy"]{
+                           print("Resubstitution Accuracy is", resubAcc)
+                       }
                    }
            })
            postTask.resume() // start the task
@@ -258,9 +277,10 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
            // create a custom HTTP POST request
            var request = URLRequest(url: postUrl!)
            // data to send in body of post request (send arguments as json)
+           //  includes model type and user submitted params
            let jsonUpload:NSDictionary = ["type":"btm",
-                                          "max_iters":maxIterationsTree.text,
-                                          "max_depth":maxDepthTree.text,
+                                          "max_iters":maxIterationsTree.text!,
+                                          "max_depth":maxDepthTree.text!,
                                           "dsid":dsid]
 
            let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
@@ -276,6 +296,9 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
                    }
                    else{
                        let jsonDictionary = self.convertDataToDictionary(with: data)
+                       if let resubAcc = jsonDictionary["resubAccuracy"]{
+                           print("Resubstitution Accuracy is", resubAcc)
+                       }
                    }
            })
            postTask.resume() // start the task

@@ -59,6 +59,8 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     
     @IBOutlet weak var StatusLabel: UILabel!
     
+    
+    // Begins calibration for each move after button is clicked
     @IBAction func BopItButton(_ sender: Any) {
         startCalibration(newCalibrationType: CalibrationType.boop_it)
     }
@@ -72,9 +74,9 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     }
     
     func makeModel() {
-        
         // create a GET request for server to update the ML model with current data
         let baseURL = "\(SERVER_URL)/UpdateModel"
+        // makes model with dsid of 0
         let query = "?dsid=\(self.dsid)"
         
         let getUrl = URL(string: baseURL+query)
@@ -100,7 +102,7 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         dataTask.resume() // start the task
         
     }
-    //Todo some animation or something, probably can do with button clicks or smthing
+
     var calibrationType:CalibrationType = .none {
         didSet{
             switch calibrationType {
@@ -125,8 +127,6 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     }
     
     func startMotionUpdates(){
-        // some internal inconsistency here: we need to ask the device manager for device
-        
         if self.motion.isDeviceMotionAvailable{
             self.motion.deviceMotionUpdateInterval = 1.0/200
             self.motion.startDeviceMotionUpdates(to: motionOperationQueue, withHandler: self.handleMotion )
@@ -136,9 +136,7 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         if let accel = motionData?.userAcceleration {
             self.ringBuffer.addNewData(xData: accel.x, yData: accel.y, zData: accel.z)
             let mag = fabs(accel.x)+fabs(accel.y)+fabs(accel.z)
-            
-            //print magnitude for testing
-            
+                        
             if mag > self.magValue {
                 // buffer up a bit more data and then notify of occurrence
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
@@ -188,9 +186,6 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
     
     //MARK: Comm with Server
     func sendFeatures(_ array:[Double], withLabel label:CalibrationType){
-        
-        //print(array)
-        //print(label)
         let baseURL = "\(SERVER_URL)/AddDataPoint"
         let postUrl = URL(string: "\(baseURL)")
 

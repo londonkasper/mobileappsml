@@ -51,6 +51,7 @@ class TestingViewController: UIViewController, URLSessionDelegate {
         self.startCalibration()
     }
     // MARK: Class Properties with Observers
+    
     enum CalibrationType {
         case none
         case boop_it

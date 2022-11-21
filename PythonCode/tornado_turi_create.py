@@ -10,6 +10,8 @@
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 
+import motor.motor_tornado
+
 
 # tornado imports
 import tornado.web
@@ -23,7 +25,7 @@ from pprint import PrettyPrinter
 
 # custom imports
 from basehandler import BaseHandler
-import turihandlers as th
+import turihandlers2 as th
 import examplehandlers as eh
 
 # Setup information for tornado class
@@ -40,24 +42,26 @@ class Application(tornado.web.Application):
         '''
 
         handlers = [(r"/[/]?", BaseHandler),
-                    (r"/Handlers[/]?",        th.PrintHandlers),
-                    (r"/AddDataPoint[/]?",    th.UploadLabeledDatapointHandler),
-                    (r"/GetNewDatasetId[/]?", th.RequestNewDatasetId),
-                    (r"/UpdateModel[/]?",     th.UpdateModelForDatasetId),     
-                    (r"/PredictOne[/]?",      th.PredictOneFromDatasetId),  
-                    (r"/GetExample[/]?",      eh.TestHandler),
-                    (r"/DoPost[/]?",          eh.PostHandlerAsGetArguments),
-                    (r"/PostWithJson[/]?",    eh.JSONPostHandler),
-                    (r"/MSLC[/]?",            eh.MSLC),             
+                    (r"/Handlers[/]?",          th.PrintHandlers),
+                    (r"/AddDataPoint[/]?",      th.UploadLabeledDatapointHandler),
+                    (r"/GetNewDatasetId[/]?",   th.RequestNewDatasetId),
+                    (r"/UpdateModel[/]?",       th.UpdateModelForDatasetId),
+                    (r"/UpdateGivenModel[/]?",  th.UpdateWithGivenModel),        
+                    (r"/PredictOne[/]?",        th.PredictOneFromDatasetId), 
+                    (r"/PredictGivenModel[/]?", th.PredictWithGivenModel), 
+                    (r"/GetExample[/]?",        eh.TestHandler),
+                    (r"/DoPost[/]?",            eh.PostHandlerAsGetArguments),
+                    (r"/PostWithJson[/]?",      eh.JSONPostHandler),
+                    (r"/MSLC[/]?",              eh.MSLC),             
                     ]
 
         self.handlers_string = str(handlers)
 
         try:
-            self.client  = MongoClient(serverSelectionTimeoutMS=50) # local host, default port
+            self.client = motor.motor_tornado.MotorClient()
             print(self.client.server_info()) # force pymongo to look for possible running servers, error if none running
             # if we get here, at least one instance of pymongo is running
-            self.db = self.client.turidatabase # database with labeledinstances, models
+            self.db = self.client.turidatabase2 # database with labeledinstances, models
             
         except ServerSelectionTimeoutError as inst:
             print('Could not initialize database connection, stopping execution')
