@@ -25,7 +25,7 @@ from pprint import PrettyPrinter
 
 # custom imports
 from basehandler import BaseHandler
-import turihandlers2 as th
+import turihandlers as th
 import examplehandlers as eh
 
 # Setup information for tornado class

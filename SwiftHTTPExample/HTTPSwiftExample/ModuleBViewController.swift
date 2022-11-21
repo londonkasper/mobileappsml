@@ -268,7 +268,6 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
            })
            postTask.resume() // start the task
        }
-       lazy private var data = ["euclidean", "squared_euclidean", "manhattan", "levenshtein", "jaccard", "weighted_jaccard", "cosine", "transformed_dot_product"]
 
        func makeBTModel() {
            // create a GET request for server to update the ML model with current data

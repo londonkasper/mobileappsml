@@ -147,7 +147,14 @@ class TestingViewController: UIViewController, URLSessionDelegate {
                             else{ // no error we are aware of
                                 let jsonDictionary = self.convertDataToDictionary(with: data)
                                 DispatchQueue.main.async{
-                                    self.PredictionLabel.text = jsonDictionary["prediction"]! as? String
+                                    // server sets trained to false if prediction is called without a model, otherwise key does not exist
+                                    // prevents app from breaking if model is not trained
+                                    if jsonDictionary["trained"] != nil {
+                                        self.PredictionLabel.text = "Please Train Model"
+                                    }
+                                    else {
+                                        self.PredictionLabel.text = jsonDictionary["prediction"]! as? String
+                                    }
                                 }
                             }
     

@@ -33,6 +33,7 @@ class UploadLabeledDatapointHandler(BaseHandler):
         vals = data['feature']
         fvals = [float(val) for val in vals]
         label = data['label']
+        # all data still saved with dsid of 0
         sess  = data['dsid']
 
         dbid = await self.db.labeledinstances.insert_one(
@@ -70,6 +71,7 @@ class UpdateModelForDatasetId(BaseHandler):
             
             model = tc.classifier.create(data,target='target',verbose=0)# training
             yhat = model.predict(data)
+            # saves model under 'best', allowing it to be used throughout module A
             self.clf['best'] = model
             acc = sum(yhat==data['target'])/float(len(data))
             # save model for use later, if desired
@@ -102,8 +104,8 @@ class PredictOneFromDatasetId(BaseHandler):
         fvals = self.get_features_as_SFrame(data['feature'])
         dsid  = data['dsid']
 
-        # load the model from the database (using pickle)
-        # we are blocking tornado!! no!!
+        # checks to see if 'best' model has been trained
+        # if model has not been trained, a JSON with unique key "trained" will be returned
         if 'best' not in self.clf:
             self.write_json({"trained":False})
   
@@ -125,23 +127,32 @@ class PredictOneFromDatasetId(BaseHandler):
 
 class UpdateWithGivenModel(BaseHandler):
     async def post(self):
+        '''Train a new model (or update) for given model type
+           Either Random Forest or Boosted Tree
+        '''
         print(self.request.body)
         inputs = json.loads(self.request.body.decode("utf-8"))   
         data = await self.get_features_and_labels_as_SFrame(inputs['dsid'])
+        # get the model type, either 'rfc' or 'btm'
         model_type = inputs['type']
 
         if len(data)>0:
             iters = inputs['max_iters']
             depth = inputs['max_depth']
+            # creates random forest model
             if model_type == 'rfc':
+                # if depth is equal to 0, default max_depth is used
                 if depth == "0": model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters)
                 else: model = tc.random_forest_classifier.create(data,target='target',verbose=0,max_iterations=iters,max_depth=depth)
+            
+            # creates boosted tree model
             elif model_type == 'btm':
+                # if depth is equal to 0, default max_depth is used
                 if depth == "0": model = tc.boosted_trees_classifier.create(data,target='target',verbose=0,max_iterations=iters)
                 else: model = tc.boosted_trees_classifier.create(data,target='target',verbose=0,max_iterations=iters,max_depth=depth)
 
-                model = tc.boosted_trees_classifier.create(data,target='target',verbose=0)
             yhat = model.predict(data)
+            # model is saved in clf under either the 'rfc' or 'btm' label
             self.clf[model_type] = model
             acc = sum(yhat==data['target'])/float(len(data))
             
@@ -166,14 +177,14 @@ class UpdateWithGivenModel(BaseHandler):
 
 class PredictWithGivenModel(BaseHandler):
     def post(self):
-        '''Predict the class of a sent feature vector
+        '''Predict the class of a sent feature vector using a specific model
         '''
         data = json.loads(self.request.body.decode("utf-8"))    
         fvals = self.get_features_as_SFrame(data['feature'])
         model_type  = data['type']
 
-        # load the model from the database (using pickle)
-        # we are blocking tornado!! no!!
+        # checks to see if model from given type has been trained
+        # if model has not been trained, a JSON with unique key "trained" will be returned
         if model_type not in self.clf:
             self.write_json({"trained":False})
   
