@@ -21,18 +21,17 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
     @IBAction func depthStepperForrest(_ sender: UIStepper) {
         self.maxDepthForrest.text = String(Int(sender.value))
     }
+
     
-    
-    @IBOutlet weak var boostedPrediction: UILabel!
-    @IBOutlet weak var maxIterationsTree: UILabel!
+    @IBOutlet weak var treePrediction: UILabel!
     @IBOutlet weak var maxDepthTree: UILabel!
-    @IBAction func iterationStepperTree(_ sender: UIStepper) {
+    @IBOutlet weak var maxIterationsTree: UILabel!
+    @IBAction func iterationsStepperTree(_ sender: UIStepper) {
         self.maxIterationsTree.text = String(Int(sender.value))
     }
     @IBAction func depthStepperTree(_ sender: UIStepper) {
         self.maxDepthTree.text = String(Int(sender.value))
     }
-    
     
     let operationQueue = OperationQueue()
     let motionOperationQueue = OperationQueue()
@@ -107,7 +106,7 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
     func startCalibration() {
         DispatchQueue.main.async{
             self.forestPrediction.text = "Waiting..."
-            self.boostedPrediction.text = "Waiting..."
+            self.treePrediction.text = "Waiting..."
         }
         self.isWaitingForMotionData = false // dont do anything yet
         self.isCalibrating = true
@@ -184,6 +183,10 @@ class ModuleBViewController: UIViewController, URLSessionDelegate{
     @IBAction func updateModelButton(_ sender: Any) {
         makeRFCModel();
         makeBTModel();
+    }
+    
+    @IBAction func predictionMotionButton(_ sender: Any) {
+        
     }
     
     func makeRFCModel() {
