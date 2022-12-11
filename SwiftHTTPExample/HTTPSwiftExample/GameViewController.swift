@@ -108,12 +108,15 @@ class GameViewController: UIViewController, URLSessionDelegate {
         timer = Timer.scheduledTimer(withTimeInterval: gameSpeed,
                                                  repeats: true) { timer in
             if self.moveNum != 0 && self.userMotion == "" {
+                self.view.backgroundColor = .red
                 print("You didn't make a move in time!")
+                self.motionLabel.text = "You didn't make a move in time!"
                 timer.invalidate() // invalidate the timer
                 playing = false
                 self.isWaitingForMotionData = false
             }
             if (playing) {
+                self.view.backgroundColor = .white
                 self.userMotion = ""
                 self.motionLabel.text = self.userMotion
                 let move = Int.random(in: 0...4)
@@ -154,6 +157,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                     self.motionLabel.text = "Wrong Move!"
                     print("Wrong Move!")
                     self.timer.invalidate()
+                    self.view.backgroundColor = .red
                 }
             }
             else {
@@ -161,6 +165,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                     self.score += 1
                     self.scoreLabel.text = String(self.score)
                     print("Correct Move!")
+                    self.view.backgroundColor = .green
                 }
             }
 
