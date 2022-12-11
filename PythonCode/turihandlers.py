@@ -60,7 +60,6 @@ class UpdateModelForDatasetId(BaseHandler):
     async def get(self):
         '''Train a new model (or update) for given dataset ID
         '''
-        print("TEST")
         dsid = self.get_int_arg("dsid",default=0)
 
         data = await self.get_features_and_labels_as_SFrame(dsid)
@@ -101,7 +100,6 @@ class Predict(BaseHandler):
     def post(self):
         '''Predict the class of a sent feature vector
         '''
-        print("HERE")
         data = json.loads(self.request.body.decode("utf-8"))    
         fvals = self.get_features_as_SFrame(data['feature'])
         dsid  = data['dsid']

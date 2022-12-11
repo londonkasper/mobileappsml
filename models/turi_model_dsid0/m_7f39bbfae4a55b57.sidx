@@ -4,16 +4,16 @@
 		"num_segments" : 1
 	},
 	"segment_files" : {
-		"0000" : "m_9c2acb42599f6894.0000"
+		"0000" : "m_7f39bbfae4a55b57.0000"
 	},
 	"columns" : [
 		{
 			"content_type" : "",
 			"metadata" : {
-				"__type__" : "0"
+				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "5"
+				"0000" : "10"
 			}
 		},
 		{
@@ -22,52 +22,43 @@
 				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "5"
+				"0000" : "10"
 			}
 		},
 		{
 			"content_type" : "",
 			"metadata" : {
-				"__type__" : "0"
+				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "5"
+				"0000" : "10"
 			}
 		},
 		{
 			"content_type" : "",
 			"metadata" : {
-				"__type__" : "1"
+				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "5"
+				"0000" : "10"
 			}
 		},
 		{
 			"content_type" : "",
 			"metadata" : {
-				"__type__" : "0"
+				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "5"
+				"0000" : "10"
 			}
 		},
 		{
 			"content_type" : "",
 			"metadata" : {
-				"__type__" : "0"
+				"__type__" : "2"
 			},
 			"segment_sizes" : {
-				"0000" : "5"
-			}
-		},
-		{
-			"content_type" : "",
-			"metadata" : {
-				"__type__" : "1"
-			},
-			"segment_sizes" : {
-				"0000" : "5"
+				"0000" : "10"
 			}
 		}
 	]

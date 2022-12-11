@@ -9,11 +9,12 @@
 
 import UIKit
 import CoreMotion
+import CoreML
 
 class GameViewController: UIViewController, URLSessionDelegate {
     let SERVER_URL = "http://10.9.142.187:8000" // change this for your server name!!!
     
-    let moves = ["['twist_it']", "['pull_it']", "['boop_it']","['push_it']", "['slide_it']"]
+    let moves = ["twist_it", "pull_it", "boop_it","push_it", "slide_it"]
     let faster = [10, 15, 20]
     let speed = [3.0, 2.0, 1.5]
     var gameSpeed = 0.0
@@ -27,6 +28,17 @@ class GameViewController: UIViewController, URLSessionDelegate {
 
     @IBOutlet weak var motionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
+    
+    var turiModel:TuriModel = {
+        do{
+            let config = MLModelConfiguration()
+            print("Model Loaded")
+            return try TuriModel(configuration: config)
+        }catch{
+            print(error)
+            fatalError("Could not load custom model")
+        }
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +105,6 @@ class GameViewController: UIViewController, URLSessionDelegate {
     var moveNum = 0
     func play() {
         var playing = true
-        print(self.gameSpeed)
         timer = Timer.scheduledTimer(withTimeInterval: gameSpeed,
                                                  repeats: true) { timer in
             if self.moveNum != 0 && self.userMotion == "" {
@@ -115,7 +126,6 @@ class GameViewController: UIViewController, URLSessionDelegate {
 
             }
             if playing && self.moveNum % self.roundsToFaster == 0 && self.gameSpeed > 1.2 {
-                print("here")
                 self.gameSpeed -= 0.1
                 self.moveNum += 1
                 timer.invalidate()
@@ -130,63 +140,37 @@ class GameViewController: UIViewController, URLSessionDelegate {
         if(self.isWaitingForMotionData){
             self.isWaitingForMotionData = false
             //Send Prediction
-            getPrediction(self.ringBuffer.getDataAsVector())
+           // getPrediction(self.ringBuffer.getDataAsVector())
+            let seq = toMLMultiArray(self.ringBuffer.getDataAsVector())
+            
+            guard let outputTuri = try? turiModel.prediction(sequence: seq) else {
+                fatalError("Unexpected runtime error.")
+            }
+            self.userMotion = outputTuri.target
+            print("User Motion: " + self.userMotion)
+
+            if(self.userMotion != self.randomMove) {
+                DispatchQueue.main.async {
+                    self.motionLabel.text = "Wrong Move!"
+                    print("Wrong Move!")
+                    self.timer.invalidate()
+                }
+            }
+            else {
+                DispatchQueue.main.async {
+                    self.score += 1
+                    self.scoreLabel.text = String(self.score)
+                    print("Correct Move!")
+                }
+            }
+
         }
     }
 
-        func getPrediction(_ array:[Double]){
-            let baseURL = "\(SERVER_URL)/Predict"
-            let postUrl = URL(string: "\(baseURL)")
+    func getPrediction(_ array:[Double]){
 
-            // create a custom HTTP POST request
-            var request = URLRequest(url: postUrl!)
-
-            // data to send in body of post request (send arguments as json)
-            let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid]
+    }
     
-            let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
-
-            request.httpMethod = "POST"
-            request.httpBody = requestBody
-
-            let postTask : URLSessionDataTask = self.session.dataTask(with: request,
-                                                                      completionHandler:{
-                            (data, response, error) in
-                            if(error != nil){
-                                if let res = response{
-                                    print("Response:\n",res)
-                                }
-                            }
-                            else{ // no error we are aware of
-                                let jsonDictionary = self.convertDataToDictionary(with: data)
-                                DispatchQueue.main.async{
-                                    // server sets trained to false if prediction is called without a model, otherwise key does not exist
-                                    // prevents app from breaking if model is not trained
-                                    if jsonDictionary["trained"] != nil {
-                                        //self.PredictionLabel.text = "Please Train Model"
-                                    }
-                                    else {
-                                        self.userMotion = (jsonDictionary["prediction"]! as? String)!
-                                        print("User Motion: " + self.userMotion)
-
-                                        if(self.userMotion != self.randomMove) {
-                                            self.motionLabel.text = "Wrong Move!"
-                                            print("Wrong Move!")
-                                            self.timer.invalidate()
-                                        }
-                                        else {
-                                            self.score += 1
-                                            self.scoreLabel.text = String(self.score)
-                                            print("Correct Move!")
-                                        }
-                                    }
-                                }
-                            }
-    
-            })
-    
-            postTask.resume() // start the task
-        }
     
     //MARK: Calibration
     //MARK: TODO MAKE CONNECTED TO BUTTON
@@ -234,6 +218,17 @@ class GameViewController: UIViewController, URLSessionDelegate {
             }
             return NSDictionary() // just return empty
         }
+    }
+    
+    private func toMLMultiArray(_ arr: [Double]) -> MLMultiArray {
+            guard let sequence = try? MLMultiArray(shape:[1200], dataType:MLMultiArrayDataType.double) else {
+                fatalError("Unexpected runtime error. MLMultiArray could not be created")
+            }
+            let size = Int(truncating: sequence.shape[0])
+            for i in 0..<size {
+                sequence[i] = NSNumber(floatLiteral: arr[i])
+            }
+            return sequence
     }
     
     override func viewDidDisappear(_ animated: Bool) {
