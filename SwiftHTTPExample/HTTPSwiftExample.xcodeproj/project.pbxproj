@@ -45,11 +45,11 @@
 		925461F029468A5D00E88270 /* FFTHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FFTHelper.m; path = ../FFTHelper.m; sourceTree = "<group>"; };
 		925461F62946915400E88270 /* Novocaine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
 		925461F8294691C100E88270 /* Novocaine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Novocaine.m; path = ../Novocaine.m; sourceTree = "<group>"; };
-		925461FA294694C600E88270 /* twist_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = twist_it.mp3; path = ../../../../../../Downloads/twist_it.mp3; sourceTree = "<group>"; };
-		925461FB294694C600E88270 /* push_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = push_it.mp3; path = ../../../../../../Downloads/push_it.mp3; sourceTree = "<group>"; };
-		925461FC294694C700E88270 /* slide_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = slide_it.mp3; path = ../../../../../../Downloads/slide_it.mp3; sourceTree = "<group>"; };
-		925461FD294694C700E88270 /* pull_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pull_it.mp3; path = ../../../../../../Downloads/pull_it.mp3; sourceTree = "<group>"; };
-		925461FE294694C700E88270 /* bop_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = bop_it.mp3; path = ../../../../../../Downloads/bop_it.mp3; sourceTree = "<group>"; };
+		925461FA294694C600E88270 /* twist_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = twist_it.mp3; sourceTree = "<group>"; };
+		925461FB294694C600E88270 /* push_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = push_it.mp3; sourceTree = "<group>"; };
+		925461FC294694C700E88270 /* slide_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = slide_it.mp3; sourceTree = "<group>"; };
+		925461FD294694C700E88270 /* pull_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pull_it.mp3; sourceTree = "<group>"; };
+		925461FE294694C700E88270 /* bop_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bop_it.mp3; sourceTree = "<group>"; };
 		92E5AB9D29459FF500E777C1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		B67483D51ACA2D6800A9970E /* HTTPSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67483D91ACA2D6800A9970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
