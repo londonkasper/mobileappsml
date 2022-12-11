@@ -12,7 +12,7 @@ import Accelerate
 class AudioModel {
     
     // MARK: Properties
-    var volume:Float = 8.0
+    var volume:Float = 10.0
     private var BUFFER_SIZE:Int
     
     // MARK: Public Methods
