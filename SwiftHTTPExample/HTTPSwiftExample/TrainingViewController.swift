@@ -11,7 +11,7 @@ import CoreMotion
 
 
 class TrainingViewController: UIViewController, URLSessionDelegate {
-    let SERVER_URL = "http://10.8.144.86:8000" // change this for your server name!!!
+    let SERVER_URL = "http://10.9.142.187:8000" // change this for your server name!!!
 
     //MARK: Basic setup, not at all good / clean / completed.
     //MARK: Maybe make seperate models for handeling server / motion activity - Code reuseability.
@@ -55,6 +55,9 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         case boop_it
         case twist_it
         case pull_it
+        case hold_it
+        case slide_it
+        case push_it
     }
     
     @IBOutlet weak var StatusLabel: UILabel!
@@ -73,6 +76,17 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
         startCalibration(newCalibrationType: CalibrationType.twist_it)
     }
     
+    @IBAction func HoldItButton(_ sender: Any) {
+        startCalibration(newCalibrationType: CalibrationType.hold_it)
+    }
+    
+    @IBAction func SlideItButton(_ sender: Any) {
+        startCalibration(newCalibrationType: CalibrationType.slide_it)
+    }
+    
+    @IBAction func PushItButton(_ sender: Any) {
+        startCalibration(newCalibrationType: CalibrationType.push_it)
+    }
     func makeModel() {
         // create a GET request for server to update the ML model with current data
         let baseURL = "\(SERVER_URL)/UpdateModel"
@@ -115,6 +129,18 @@ class TrainingViewController: UIViewController, URLSessionDelegate {
                 setDelayedWaitingToTrue(1.0)
                 break
             case .twist_it:
+                self.isCalibrating = true
+                setDelayedWaitingToTrue(1.0)
+                break
+            case .push_it:
+                self.isCalibrating = true
+                setDelayedWaitingToTrue(1.0)
+                break
+            case .slide_it:
+                self.isCalibrating = true
+                setDelayedWaitingToTrue(1.0)
+                break
+            case .hold_it:
                 self.isCalibrating = true
                 setDelayedWaitingToTrue(1.0)
                 break

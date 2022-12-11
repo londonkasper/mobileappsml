@@ -47,7 +47,7 @@ class Application(tornado.web.Application):
                     (r"/GetNewDatasetId[/]?",   th.RequestNewDatasetId),
                     (r"/UpdateModel[/]?",       th.UpdateModelForDatasetId),
                     (r"/UpdateGivenModel[/]?",  th.UpdateWithGivenModel),        
-                    (r"/PredictOne[/]?",        th.PredictOneFromDatasetId), 
+                    (r"/Predict[/]?",           th.Predict), 
                     (r"/PredictGivenModel[/]?", th.PredictWithGivenModel), 
                     (r"/GetExample[/]?",        eh.TestHandler),
                     (r"/DoPost[/]?",            eh.PostHandlerAsGetArguments),

@@ -10,6 +10,7 @@
 		158075BC292A243400D0B076 /* ModuleAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075BB292A243400D0B076 /* ModuleAViewController.swift */; };
 		158075C0292A255000D0B076 /* TrainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075BF292A255000D0B076 /* TrainingViewController.swift */; };
 		158075C2292A257100D0B076 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075C1292A257100D0B076 /* TestingViewController.swift */; };
+		92E5AB9E29459FF500E777C1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E5AB9D29459FF500E777C1 /* GameViewController.swift */; };
 		B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DA1ACA2D6800A9970E /* AppDelegate.swift */; };
 		B67483DD1ACA2D6800A9970E /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DC1ACA2D6800A9970E /* RootViewController.swift */; };
 		B67483E01ACA2D6800A9970E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B67483DE1ACA2D6800A9970E /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		158075BB292A243400D0B076 /* ModuleAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleAViewController.swift; sourceTree = "<group>"; };
 		158075BF292A255000D0B076 /* TrainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingViewController.swift; sourceTree = "<group>"; };
 		158075C1292A257100D0B076 /* TestingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
+		92E5AB9D29459FF500E777C1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		B67483D51ACA2D6800A9970E /* HTTPSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67483D91ACA2D6800A9970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67483DA1ACA2D6800A9970E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		B67483D71ACA2D6800A9970E /* HTTPSwiftExample */ = {
 			isa = PBXGroup;
 			children = (
+				92E5AB9D29459FF500E777C1 /* GameViewController.swift */,
 				158075BB292A243400D0B076 /* ModuleAViewController.swift */,
 				B67483DA1ACA2D6800A9970E /* AppDelegate.swift */,
 				B67483DC1ACA2D6800A9970E /* RootViewController.swift */,
@@ -159,6 +162,7 @@
 			files = (
 				158075C2292A257100D0B076 /* TestingViewController.swift in Sources */,
 				158075C0292A255000D0B076 /* TrainingViewController.swift in Sources */,
+				92E5AB9E29459FF500E777C1 /* GameViewController.swift in Sources */,
 				158075BC292A243400D0B076 /* ModuleAViewController.swift in Sources */,
 				B67483DD1ACA2D6800A9970E /* RootViewController.swift in Sources */,
 				B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */,

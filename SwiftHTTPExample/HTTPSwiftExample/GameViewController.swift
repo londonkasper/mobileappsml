@@ -1,21 +1,42 @@
 //
-//  TestingViewController.swift
+//  Game.swift
 //  HTTPSwiftExample
 //
-//  Created by Jeremy Waibel on 11/20/22.
+//  Created by Carys LeKander on 12/10/22.
 //  Copyright © 2022 Eric Larson. All rights reserved.
 //
+
 
 import UIKit
 import CoreMotion
 
-class TestingViewController: UIViewController, URLSessionDelegate {
+class GameViewController: UIViewController, URLSessionDelegate {
     let SERVER_URL = "http://10.9.142.187:8000" // change this for your server name!!!
+    
+    let moves = ["['twist_it']", "['pull_it']", "['boop_it']","['push_it']", "['slide_it']"]
+    let faster = [10, 15, 20]
+    let speed = [3.0, 2.0, 1.5]
+    var gameSpeed = 0.0
+    var roundsToFaster = 0
+    var userGame = 0
+    var score = 0
+    var userMotion = ""
+    var randomMove = ""
+    
+    var timer = Timer()
 
+    @IBOutlet weak var motionLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        gameSpeed = speed[userGame]
+        print(gameSpeed)
+        roundsToFaster = faster[userGame]
         startMotionUpdates()
+        play()
     }
+
     
     lazy var session: URLSession = {
         let sessionConfig = URLSessionConfiguration.ephemeral
@@ -45,58 +66,7 @@ class TestingViewController: UIViewController, URLSessionDelegate {
     //Hardcode as 0 for now, maybe in the final make multiple models for easy/medium/hard modes
     let dsid = 0
     
-    @IBOutlet weak var PredictionLabel: UILabel!
-    
-    @IBAction func MotionButton(_ sender: Any) {
-        self.startCalibration()
-    }
-    // MARK: Class Properties with Observers
-    
-    enum CalibrationType {
-        case none
-        case boop_it
-        case twist_it
-        case pull_it
-        case push_it
-        case slide_it
-    }
-    
-    
-    //Todo some animation or something, probably can do with button clicks or smthing
-    var calibrationType:CalibrationType = .none {
-        didSet{
-            switch calibrationType {
-            case .boop_it:
-                self.isCalibrating = true
-                setDelayedWaitingToTrue(1.0)
-                break
-            case .pull_it:
-                self.isCalibrating = true
-                setDelayedWaitingToTrue(1.0)
-                break
-            case .twist_it:
-                self.isCalibrating = true
-                setDelayedWaitingToTrue(1.0)
-                break
-            case .push_it:
-                self.isCalibrating = true
-                setDelayedWaitingToTrue(1.0)
-                break
-            case .slide_it:
-                self.isCalibrating = true
-                setDelayedWaitingToTrue(1.0)
-                break
-            case .none:
-                self.isCalibrating = false
-                setDelayedWaitingToTrue(1.0)
-                break
-            }
-        }
-    }
-    
     func startMotionUpdates(){
-        // some internal inconsistency here: we need to ask the device manager for device
-        
         if self.motion.isDeviceMotionAvailable{
             self.motion.deviceMotionUpdateInterval = 1.0/200
             self.motion.startDeviceMotionUpdates(to: motionOperationQueue, withHandler: self.handleMotion )
@@ -120,14 +90,48 @@ class TestingViewController: UIViewController, URLSessionDelegate {
         }
     }
     
+    var moveNum = 0
+    func play() {
+        var playing = true
+        print(self.gameSpeed)
+        timer = Timer.scheduledTimer(withTimeInterval: gameSpeed,
+                                                 repeats: true) { timer in
+            if self.moveNum != 0 && self.userMotion == "" {
+                print("You didn't make a move in time!")
+                timer.invalidate() // invalidate the timer
+                playing = false
+                self.isWaitingForMotionData = false
+            }
+            if (playing) {
+                self.userMotion = ""
+                self.motionLabel.text = self.userMotion
+                let move = Int.random(in: 0...4)
+                self.randomMove = self.moves[move]
+                print("Random Move: " + self.randomMove)
+                self.motionLabel.text = self.randomMove
+                self.scoreLabel.text = String(self.score)
+                self.isWaitingForMotionData = true
+                self.moveNum += 1
+
+            }
+            if playing && self.moveNum % self.roundsToFaster == 0 && self.gameSpeed > 1.2 {
+                print("here")
+                self.gameSpeed -= 0.1
+                self.moveNum += 1
+                timer.invalidate()
+                self.play()
+                playing = false
+            }
+        }
+    }
+    
     //MARK: Calibration procedure
     func largeMotionEventOccurred(){
-        if(self.isCalibrating && self.isWaitingForMotionData){
+        if(self.isWaitingForMotionData){
             self.isWaitingForMotionData = false
-            self.isCalibrating = false
             //Send Prediction
-                getPrediction(self.ringBuffer.getDataAsVector())
-            }
+            getPrediction(self.ringBuffer.getDataAsVector())
+        }
     }
 
         func getPrediction(_ array:[Double]){
@@ -159,10 +163,22 @@ class TestingViewController: UIViewController, URLSessionDelegate {
                                     // server sets trained to false if prediction is called without a model, otherwise key does not exist
                                     // prevents app from breaking if model is not trained
                                     if jsonDictionary["trained"] != nil {
-                                        self.PredictionLabel.text = "Please Train Model"
+                                        //self.PredictionLabel.text = "Please Train Model"
                                     }
                                     else {
-                                        self.PredictionLabel.text = jsonDictionary["prediction"]! as? String
+                                        self.userMotion = (jsonDictionary["prediction"]! as? String)!
+                                        print("User Motion: " + self.userMotion)
+
+                                        if(self.userMotion != self.randomMove) {
+                                            self.motionLabel.text = "Wrong Move!"
+                                            print("Wrong Move!")
+                                            self.timer.invalidate()
+                                        }
+                                        else {
+                                            self.score += 1
+                                            self.scoreLabel.text = String(self.score)
+                                            print("Correct Move!")
+                                        }
                                     }
                                 }
                             }
@@ -176,7 +192,7 @@ class TestingViewController: UIViewController, URLSessionDelegate {
     //MARK: TODO MAKE CONNECTED TO BUTTON
     func startCalibration() {
         DispatchQueue.main.async{
-            self.PredictionLabel.text = "Waiting..."
+            //self.PredictionLabel.text = "Waiting..."
         }
         self.isWaitingForMotionData = false // dont do anything yet
         self.isCalibrating = true
