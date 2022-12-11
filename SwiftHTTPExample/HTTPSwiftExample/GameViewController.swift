@@ -239,8 +239,12 @@ class GameViewController: UIViewController, URLSessionDelegate {
             return sequence
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("HERE")
         self.motion.stopDeviceMotionUpdates()
+        self.timer.invalidate()
+        audio.turnOff()
+        self.isWaitingForMotionData = false
     }
 }

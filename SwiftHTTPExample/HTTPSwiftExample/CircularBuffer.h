@@ -80,3 +80,4 @@
 -(float) minOfChannel:(SInt64) channel;
 
 @end
+

@@ -18,8 +18,6 @@ class AudioModel {
     // MARK: Public Methods
     init() {
         BUFFER_SIZE = 0 // unused
-        self.togglePlaying()
-
     }
     
     // public function for playing from a file reader file
@@ -51,6 +49,12 @@ class AudioModel {
         }
     }
     
+    func turnOff() {
+        if let manager = self.audioManager{
+            manager.pause()
+        }
+    }
+        
     func setVolume(val:Float){
         self.volume = val
     }

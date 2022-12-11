@@ -11,19 +11,18 @@
 		158075C0292A255000D0B076 /* TrainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075BF292A255000D0B076 /* TrainingViewController.swift */; };
 		158075C2292A257100D0B076 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075C1292A257100D0B076 /* TestingViewController.swift */; };
 		92074CCF29464ED0000CA7F5 /* TuriModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 92074CCE29464ED0000CA7F5 /* TuriModel.mlmodel */; };
-		925461BE29467C2200E88270 /* bridgingheader.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461BD29467C2200E88270 /* bridgingheader.m */; };
-		925461C329467C7700E88270 /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461C229467C7700E88270 /* Novocaine.m */; };
 		925461C529467C8500E88270 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 925461C429467C8500E88270 /* Shaders.metal */; };
 		925461C729467C9000E88270 /* MetalGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925461C629467C9000E88270 /* MetalGraph.swift */; };
-		925461C929467CA700E88270 /* FFTHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461C829467CA700E88270 /* FFTHelper.m */; };
-		925461CC29467CB500E88270 /* CircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461CB29467CB500E88270 /* CircularBuffer.m */; };
-		925461CF29467CBF00E88270 /* AudioFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461CE29467CBF00E88270 /* AudioFileReader.m */; };
 		925461D4294681B900E88270 /* AudioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925461D3294681B900E88270 /* AudioModel.swift */; };
 		925461E42946831400E88270 /* slide_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461DF2946831300E88270 /* slide_it.mp3 */; };
 		925461E52946831400E88270 /* pull_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461E02946831300E88270 /* pull_it.mp3 */; };
 		925461E62946831400E88270 /* push_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461E12946831300E88270 /* push_it.mp3 */; };
 		925461E72946831400E88270 /* boop_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461E22946831300E88270 /* boop_it.mp3 */; };
 		925461E82946831400E88270 /* twist_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461E32946831300E88270 /* twist_it.mp3 */; };
+		925461EB2946894C00E88270 /* AudioFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461EA2946894C00E88270 /* AudioFileReader.m */; };
+		925461EE294689F500E88270 /* CircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461ED294689F500E88270 /* CircularBuffer.m */; };
+		925461F129468A5D00E88270 /* FFTHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461F029468A5D00E88270 /* FFTHelper.m */; };
+		925461F9294691C100E88270 /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 925461F8294691C100E88270 /* Novocaine.m */; };
 		92E5AB9E29459FF500E777C1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E5AB9D29459FF500E777C1 /* GameViewController.swift */; };
 		B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DA1ACA2D6800A9970E /* AppDelegate.swift */; };
 		B67483DD1ACA2D6800A9970E /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DC1ACA2D6800A9970E /* RootViewController.swift */; };
@@ -39,23 +38,22 @@
 		158075C1292A257100D0B076 /* TestingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		92074CCE29464ED0000CA7F5 /* TuriModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = TuriModel.mlmodel; path = ../../TuriModel.mlmodel; sourceTree = "<group>"; };
 		925461BC29467C2100E88270 /* HTTPSwiftExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HTTPSwiftExample-Bridging-Header.h"; sourceTree = "<group>"; };
-		925461BD29467C2200E88270 /* bridgingheader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bridgingheader.m; sourceTree = "<group>"; };
-		925461C129467C7200E88270 /* Novocaine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Novocaine.h; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/Novocaine.h; sourceTree = "<group>"; };
-		925461C229467C7700E88270 /* Novocaine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Novocaine.m; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/Novocaine.m; sourceTree = "<group>"; };
 		925461C429467C8500E88270 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/Shaders.metal; sourceTree = "<group>"; };
 		925461C629467C9000E88270 /* MetalGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetalGraph.swift; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/MetalGraph.swift; sourceTree = "<group>"; };
-		925461C829467CA700E88270 /* FFTHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FFTHelper.m; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/FFTHelper.m; sourceTree = "<group>"; };
-		925461CA29467CAF00E88270 /* FFTHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FFTHelper.h; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/FFTHelper.h; sourceTree = "<group>"; };
-		925461CB29467CB500E88270 /* CircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CircularBuffer.m; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/CircularBuffer.m; sourceTree = "<group>"; };
-		925461CD29467CBA00E88270 /* CircularBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CircularBuffer.h; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/CircularBuffer.h; sourceTree = "<group>"; };
-		925461CE29467CBF00E88270 /* AudioFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioFileReader.m; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/AudioFileReader.m; sourceTree = "<group>"; };
-		925461D029467CC300E88270 /* AudioFileReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AudioFileReader.h; path = ../../../../MachineLearning/AudioLabSwift/AudioLabSwift/Utility/AudioFileReader.h; sourceTree = "<group>"; };
 		925461D3294681B900E88270 /* AudioModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioModel.swift; sourceTree = "<group>"; };
 		925461DF2946831300E88270 /* slide_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = slide_it.mp3; path = ../../../../../../Desktop/slide_it.mp3; sourceTree = "<group>"; };
 		925461E02946831300E88270 /* pull_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pull_it.mp3; path = ../../../../../../Desktop/pull_it.mp3; sourceTree = "<group>"; };
 		925461E12946831300E88270 /* push_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = push_it.mp3; path = ../../../../../../Desktop/push_it.mp3; sourceTree = "<group>"; };
 		925461E22946831300E88270 /* boop_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = boop_it.mp3; path = ../../../../../../Desktop/boop_it.mp3; sourceTree = "<group>"; };
 		925461E32946831300E88270 /* twist_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = twist_it.mp3; path = ../../../../../../Desktop/twist_it.mp3; sourceTree = "<group>"; };
+		925461E92946888900E88270 /* AudioFileReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioFileReader.h; sourceTree = "<group>"; };
+		925461EA2946894C00E88270 /* AudioFileReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AudioFileReader.m; path = ../AudioFileReader.m; sourceTree = "<group>"; };
+		925461EC2946899100E88270 /* CircularBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
+		925461ED294689F500E88270 /* CircularBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CircularBuffer.m; path = ../CircularBuffer.m; sourceTree = "<group>"; };
+		925461EF29468A1B00E88270 /* FFTHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTHelper.h; sourceTree = "<group>"; };
+		925461F029468A5D00E88270 /* FFTHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FFTHelper.m; path = ../FFTHelper.m; sourceTree = "<group>"; };
+		925461F62946915400E88270 /* Novocaine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
+		925461F8294691C100E88270 /* Novocaine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Novocaine.m; path = ../Novocaine.m; sourceTree = "<group>"; };
 		92E5AB9D29459FF500E777C1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		B67483D51ACA2D6800A9970E /* HTTPSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67483D91ACA2D6800A9970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -123,17 +121,16 @@
 			isa = PBXGroup;
 			children = (
 				B67483D91ACA2D6800A9970E /* Info.plist */,
-				925461D029467CC300E88270 /* AudioFileReader.h */,
-				925461CE29467CBF00E88270 /* AudioFileReader.m */,
-				925461CD29467CBA00E88270 /* CircularBuffer.h */,
-				925461CB29467CB500E88270 /* CircularBuffer.m */,
-				925461CA29467CAF00E88270 /* FFTHelper.h */,
-				925461C829467CA700E88270 /* FFTHelper.m */,
+				925461E92946888900E88270 /* AudioFileReader.h */,
+				925461EA2946894C00E88270 /* AudioFileReader.m */,
+				925461EC2946899100E88270 /* CircularBuffer.h */,
+				925461ED294689F500E88270 /* CircularBuffer.m */,
+				925461EF29468A1B00E88270 /* FFTHelper.h */,
+				925461F029468A5D00E88270 /* FFTHelper.m */,
+				925461F62946915400E88270 /* Novocaine.h */,
+				925461F8294691C100E88270 /* Novocaine.m */,
 				925461C629467C9000E88270 /* MetalGraph.swift */,
-				925461C129467C7200E88270 /* Novocaine.h */,
-				925461C229467C7700E88270 /* Novocaine.m */,
 				925461C429467C8500E88270 /* Shaders.metal */,
-				925461BD29467C2200E88270 /* bridgingheader.m */,
 				925461BC29467C2100E88270 /* HTTPSwiftExample-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
@@ -217,22 +214,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				925461CC29467CB500E88270 /* CircularBuffer.m in Sources */,
-				925461CF29467CBF00E88270 /* AudioFileReader.m in Sources */,
+				925461EE294689F500E88270 /* CircularBuffer.m in Sources */,
 				925461C529467C8500E88270 /* Shaders.metal in Sources */,
 				925461C729467C9000E88270 /* MetalGraph.swift in Sources */,
-				925461C929467CA700E88270 /* FFTHelper.m in Sources */,
 				158075C2292A257100D0B076 /* TestingViewController.swift in Sources */,
 				158075C0292A255000D0B076 /* TrainingViewController.swift in Sources */,
-				925461BE29467C2200E88270 /* bridgingheader.m in Sources */,
 				92E5AB9E29459FF500E777C1 /* GameViewController.swift in Sources */,
 				158075BC292A243400D0B076 /* ModuleAViewController.swift in Sources */,
 				B67483DD1ACA2D6800A9970E /* RootViewController.swift in Sources */,
+				925461F129468A5D00E88270 /* FFTHelper.m in Sources */,
 				B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */,
+				925461EB2946894C00E88270 /* AudioFileReader.m in Sources */,
 				92074CCF29464ED0000CA7F5 /* TuriModel.mlmodel in Sources */,
 				B694B01A1FA377E4009A4277 /* RingBuffer.swift in Sources */,
 				925461D4294681B900E88270 /* AudioModel.swift in Sources */,
-				925461C329467C7700E88270 /* Novocaine.m in Sources */,
+				925461F9294691C100E88270 /* Novocaine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
