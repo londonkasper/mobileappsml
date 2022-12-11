@@ -23,6 +23,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
     var score = 0
     var userMotion = ""
     var randomMove = ""
+    let audio = AudioModel()
     
     var timer = Timer()
 
@@ -45,6 +46,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
         gameSpeed = speed[userGame]
         print(gameSpeed)
         roundsToFaster = faster[userGame]
+        audio.setVolume(val: 10.0)
         startMotionUpdates()
         play()
     }
@@ -121,6 +123,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                 self.motionLabel.text = self.userMotion
                 let move = Int.random(in: 0...4)
                 self.randomMove = self.moves[move]
+                self.audio.setFile(file: self.randomMove)
                 print("Random Move: " + self.randomMove)
                 self.motionLabel.text = self.randomMove
                 self.scoreLabel.text = String(self.score)
