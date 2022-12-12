@@ -14,6 +14,10 @@ import CoreML
 class GameViewController: UIViewController, URLSessionDelegate {
     let SERVER_URL = "http://10.9.142.187:8000" // change this for your server name!!!
     
+    let bopItBlue = UIColor(red: 0.30, green: 0.84, blue: 0.96, alpha: 1.00)
+    let bopItYellow = UIColor(red: 1.00, green: 0.90, blue: 0.24, alpha: 1.00)
+    let bopItPurple = UIColor(red: 0.52, green: 0.41, blue: 0.82, alpha: 1.00)
+    
     let moves = ["twist_it", "pull_it", "boop_it","push_it", "slide_it"]
     let faster = [10, 15, 20]
     let speed = [3.0, 2.0, 1.5]
@@ -30,6 +34,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
     @IBOutlet weak var motionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var highScoreLabel: UILabel!
+    @IBOutlet weak var bopItAgainButton: UIButton!
     
     var turiModel:TuriModel = {
         do{
@@ -46,10 +51,10 @@ class GameViewController: UIViewController, URLSessionDelegate {
         super.viewDidLoad()
         highScoreLabel.text = ""
         gameSpeed = speed[userGame]
-        print(gameSpeed)
         roundsToFaster = faster[userGame]
         audio.setVolume(val: 10.0)
         startMotionUpdates()
+        view.backgroundColor = bopItYellow
         play()
     }
 
@@ -112,7 +117,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
         timer = Timer.scheduledTimer(withTimeInterval: gameSpeed,
                                                  repeats: true) { timer in
             if self.moveNum != 0 && self.userMotion == "" {
-                self.view.backgroundColor = .red
+                self.view.backgroundColor = self.bopItBlue
                 print("You didn't make a move in time!")
                 self.motionLabel.text = "You didn't make a move in time!"
                 timer.invalidate() // invalidate the timer
@@ -121,7 +126,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                 self.endGame()
             }
             if (playing) {
-                self.view.backgroundColor = .white
+                self.view.backgroundColor = self.bopItYellow
                 self.userMotion = ""
                 self.motionLabel.text = self.userMotion
                 let move = Int.random(in: 0...4)
@@ -163,7 +168,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                     self.motionLabel.text = "Wrong Move!"
                     print("Wrong Move!")
                     self.timer.invalidate()
-                    self.view.backgroundColor = .red
+                    self.view.backgroundColor = self.bopItBlue
                     self.endGame()
                 }
             }
@@ -172,7 +177,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                     self.score += 1
                     self.scoreLabel.text = String(self.score)
                     print("Correct Move!")
-                    self.view.backgroundColor = .green
+                    self.view.backgroundColor = self.bopItPurple
                 }
             }
 
@@ -180,11 +185,10 @@ class GameViewController: UIViewController, URLSessionDelegate {
     }
 
     func endGame() {
-        print("HERE")
         let difficulties =  ["Wimp", "Novice", "Expert"]
         if let highScore = UserDefaults.standard.string(forKey: difficulties[userGame]) {
             if  self.score > Int(highScore)! {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     self.view.backgroundColor = .white
                     self.motionLabel.text = ""
                     self.scoreLabel.text = ""
@@ -193,22 +197,28 @@ class GameViewController: UIViewController, URLSessionDelegate {
                     UserDefaults.standard.set(self.score, forKey: difficulties[self.userGame])
                 }
             }
-        } else {
+        }
+        else {
             UserDefaults.standard.set(self.score, forKey: difficulties[userGame])
         }
+        self.bopItAgainButton.isHidden = false
+
     }
     
+    @IBAction func bopItAgain(_ sender: Any) {
+        self.score = 0
+        self.view.backgroundColor = self.bopItYellow
+        self.scoreLabel.text = "Score"
+        self.motionLabel.text = "Motion"
+        self.highScoreLabel.text = ""
+        self.bopItAgainButton.isHidden = true
+        self.moveNum = 0
+
+        play()
+    }
     
     //MARK: Calibration
     //MARK: TODO MAKE CONNECTED TO BUTTON
-    func startCalibration() {
-        DispatchQueue.main.async{
-            //self.PredictionLabel.text = "Waiting..."
-        }
-        self.isWaitingForMotionData = false // dont do anything yet
-        self.isCalibrating = true
-        setDelayedWaitingToTrue(1)
-    }
     
     func setDelayedWaitingToTrue(_ time:Double){
         DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: {
@@ -263,21 +273,19 @@ class GameViewController: UIViewController, URLSessionDelegate {
         layer.emitterPosition = CGPoint(x: view.center.x,  y: -100)
         
         let colors: [UIColor] = [
-            .systemGreen,
-            .systemRed,
-            .systemBlue,
-            .systemOrange,
-            .systemPurple,
-            .systemPink,
-            .systemYellow
+            bopItBlue,
+            bopItPurple,
+            bopItYellow,
+            .black,
+            .white
         ]
         let cells: [CAEmitterCell] = colors.compactMap {
             let cell = CAEmitterCell()
             cell.scale = 0.1
             cell.emissionRange = .pi * 2
             cell.lifetime = 10
-            cell.birthRate = 25
-            cell.velocity = 150
+            cell.birthRate = 20
+            cell.velocity = 200
             cell.color  = $0.cgColor
             cell.contents = UIImage(named:"square")!.cgImage
             return cell

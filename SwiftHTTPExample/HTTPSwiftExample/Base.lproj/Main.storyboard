@@ -36,15 +36,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BOOP IT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZiW-9h-ojN">
-                                <rect key="frame" x="16" y="0.0" width="343" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="4UU-Rf-fZH"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="60"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqi-dC-JXF">
                                 <rect key="frame" x="115.5" y="467.5" width="144.5" height="79.5"/>
                                 <state key="normal" title="Button"/>
@@ -77,16 +68,21 @@
                                     <segue destination="EID-ih-z1P" kind="push" id="Zdz-vH-aOb"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BOOP IT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZiW-9h-ojN">
+                                <rect key="frame" x="77.5" y="182" width="220" height="79.5"/>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="73"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ZiW-9h-ojN" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="-44" id="3lu-GN-KoC"/>
                             <constraint firstItem="mqi-dC-JXF" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="JBr-Zz-exp"/>
+                            <constraint firstItem="ZiW-9h-ojN" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="138" id="KKh-Rr-FaU"/>
+                            <constraint firstItem="ZiW-9h-ojN" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Qbf-Lg-eIl"/>
                             <constraint firstItem="cwx-br-NF6" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="RbV-OB-vQ4"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="mqi-dC-JXF" secondAttribute="bottom" constant="120" id="SVj-Ob-dN1"/>
                             <constraint firstItem="mqi-dC-JXF" firstAttribute="top" secondItem="cwx-br-NF6" secondAttribute="bottom" constant="25" id="a58-4M-vh2"/>
-                            <constraint firstItem="ZiW-9h-ojN" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="rW4-Po-cNh"/>
-                            <constraint firstItem="ZiW-9h-ojN" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="zMl-XT-P6D"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="w8T-v6-JgQ"/>
@@ -146,7 +142,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled">
                                     <attributedString key="attributedTitle">
-                                        <fragment content="Lets Bop It!">
+                                        <fragment content="Lets Boop It!">
                                             <attributes>
                                                 <font key="NSFont" size="35" name="MarkerFelt-Thin"/>
                                             </attributes>
@@ -271,12 +267,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motion" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="72O-Oy-iXv">
-                                <rect key="frame" x="126" y="219" width="123.5" height="43.5"/>
-                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="40"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dCn-vt-XbT">
                                 <rect key="frame" x="146" y="148" width="83" height="44.5"/>
                                 <constraints>
@@ -292,25 +282,36 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lnk-Ig-rjR">
-                                <rect key="frame" x="83.5" y="583" width="208" height="53"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lnk-Ig-rjR">
+                                <rect key="frame" x="75.5" y="583" width="224" height="53"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled">
                                     <attributedString key="attributedTitle">
-                                        <fragment content="Bop It Again!">
+                                        <fragment content="Boop It Again!">
                                             <attributes>
                                                 <font key="NSFont" size="35" name="MarkerFelt-Thin"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                             </attributes>
                                         </fragment>
                                     </attributedString>
-                                    <color key="baseForegroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <color key="baseBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseForegroundColor" systemColor="systemYellowColor"/>
+                                    <color key="baseBackgroundColor" systemColor="systemIndigoColor"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="PlayButton:" destination="xK6-wL-FNy" eventType="touchUpInside" id="3c1-0J-h11"/>
+                                    <action selector="bopItAgain:" destination="6Gc-Rb-A5x" eventType="touchUpInside" id="YB8-jD-c5T"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motion" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="72O-Oy-iXv">
+                                <rect key="frame" x="15.5" y="191" width="344" height="138"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="138" id="E3f-FX-2db"/>
+                                    <constraint firstAttribute="width" constant="344" id="ejJ-Rr-mHT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -319,13 +320,16 @@
                             <constraint firstItem="PBb-N4-RoI" firstAttribute="centerY" secondItem="T9E-9H-UpH" secondAttribute="centerY" id="FHd-v0-Vzc"/>
                             <constraint firstItem="dCn-vt-XbT" firstAttribute="centerX" secondItem="PBb-N4-RoI" secondAttribute="centerX" id="Hq7-XK-H9B"/>
                             <constraint firstItem="Sd2-mc-uDP" firstAttribute="top" secondItem="lnk-Ig-rjR" secondAttribute="bottom" constant="31" id="Ooz-D7-3N4"/>
+                            <constraint firstItem="72O-Oy-iXv" firstAttribute="centerX" secondItem="PBb-N4-RoI" secondAttribute="centerX" id="V95-4s-MMx"/>
                             <constraint firstItem="dCn-vt-XbT" firstAttribute="top" secondItem="zQB-vy-Ykh" secondAttribute="bottom" constant="104" id="Ymh-cG-SHB"/>
-                            <constraint firstItem="72O-Oy-iXv" firstAttribute="top" secondItem="dCn-vt-XbT" secondAttribute="bottom" constant="26.5" id="mzC-0a-Ld7"/>
-                            <constraint firstItem="72O-Oy-iXv" firstAttribute="centerX" secondItem="dCn-vt-XbT" secondAttribute="centerX" id="wdR-qv-fTU"/>
+                            <constraint firstItem="72O-Oy-iXv" firstAttribute="top" secondItem="dCn-vt-XbT" secondAttribute="bottom" constant="-1.5" id="oMx-gO-mbR"/>
+                            <constraint firstItem="72O-Oy-iXv" firstAttribute="centerX" secondItem="T9E-9H-UpH" secondAttribute="centerX" id="osN-oB-KJ8"/>
+                            <constraint firstItem="72O-Oy-iXv" firstAttribute="centerX" secondItem="T9E-9H-UpH" secondAttribute="centerX" id="uvo-8r-XHj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rkQ-gy-t8G"/>
                     <connections>
+                        <outlet property="bopItAgainButton" destination="lnk-Ig-rjR" id="JnL-Xx-wnO"/>
                         <outlet property="highScoreLabel" destination="PBb-N4-RoI" id="jsU-qe-Cgd"/>
                         <outlet property="motionLabel" destination="72O-Oy-iXv" id="Dx6-Va-aB4"/>
                         <outlet property="scoreLabel" destination="dCn-vt-XbT" id="Ra3-Y6-JhV"/>
@@ -599,6 +603,12 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

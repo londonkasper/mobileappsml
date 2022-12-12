@@ -13,12 +13,16 @@ import UIKit
 
 class HowToPlayViewController: UIViewController {
     
+    let bopItBlue = UIColor(red: 0.30, green: 0.84, blue: 0.96, alpha: 1.00)
+    let bopItYellow = UIColor(red: 1.00, green: 0.90, blue: 0.24, alpha: 1.00)
+    let bopItPurple = UIColor(red: 0.52, green: 0.41, blue: 0.82, alpha: 1.00)
+    
     private let scrollView = UIScrollView()
     
     private let pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = 6
-        pageControl.backgroundColor = .systemBlue
+        pageControl.backgroundColor = .black
         return pageControl
     }()
     
@@ -51,7 +55,7 @@ class HowToPlayViewController: UIViewController {
             slide5.moveDesc.text = "Push your phone away from you, push it real good"
         
             let slide6:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            //slide5.imageView.image = UIImage(named: "ic_onboarding_5")
+            //slide6.imageView.image = UIImage(named: "ic_onboarding_5")
             slide6.moveTitle.text = "Slide It"
             slide6.moveDesc.text = "Slide your phone to the right"
             
@@ -87,12 +91,12 @@ class HowToPlayViewController: UIViewController {
         scrollView.contentSize = CGSize(width: view.frame.size.width*6, height: 0)
         scrollView.isPagingEnabled = true
         let colors: [UIColor]  = [
-            .systemRed,
-            .systemGreen,
-            .systemGray,
-            .systemOrange,
-            .systemPurple,
-            .systemPink]
+            self.bopItBlue,
+            self.bopItYellow,
+            self.bopItPurple,
+            self.bopItBlue,
+            self.bopItYellow,
+            self.bopItPurple,]
         
         for i in 0..<6 {
             print(i)
