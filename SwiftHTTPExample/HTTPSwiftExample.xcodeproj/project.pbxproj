@@ -90,6 +90,7 @@
 		92293B8429472057004E22F2 /* TrainingTesting */ = {
 			isa = PBXGroup;
 			children = (
+				158075BB292A243400D0B076 /* ModuleAViewController.swift */,
 				158075BF292A255000D0B076 /* TrainingViewController.swift */,
 				158075C1292A257100D0B076 /* TestingViewController.swift */,
 			);
@@ -119,7 +120,6 @@
 				92E5AB9D29459FF500E777C1 /* GameViewController.swift */,
 				925461D3294681B900E88270 /* AudioModel.swift */,
 				925462142946BD5400E88270 /* HowToPlayViewController.swift */,
-				158075BB292A243400D0B076 /* ModuleAViewController.swift */,
 				156DAFFD2946898200846E4F /* DifficultyViewController.swift */,
 				B67483DA1ACA2D6800A9970E /* AppDelegate.swift */,
 				B67483DC1ACA2D6800A9970E /* RootViewController.swift */,

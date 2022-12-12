@@ -21,7 +21,7 @@ class HowToPlayViewController: UIViewController {
     
     private let pageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.numberOfPages = 6
+        pageControl.numberOfPages = 7
         pageControl.backgroundColor = .black
         return pageControl
     }()
@@ -31,35 +31,40 @@ class HowToPlayViewController: UIViewController {
             let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
            // slide1.imageView.image = UIImage(named: "ic_onboarding_1")
             slide1.moveTitle.text = "Welcome to Boop It!"
-            slide1.moveDesc.text = "Are you ready to Boop to your heart's content? Do the moves on the screen before the time runs out! For best results, hold phone in  left hand and do moves sharply and quickly. Swipe for tutorials on each move"
-            
+            slide1.moveDesc.text = "Are you ready to Boop to your heart's content? Do the moves on the screen before the time runs out!"
+        
             let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            //slide2.imageView.image = UIImage(named: "ic_onboarding_2")
-            slide2.moveTitle.text = "Boop It"
-            slide2.moveDesc.text = "Hit your phone"
-            
+           // slide1.imageView.image = UIImage(named: "ic_onboarding_1")
+            slide2.moveTitle.text = ""
+            slide2.moveDesc.text = "For best results, hold phone in  left hand and do moves sharply and quickly. Swipe for tutorials on each move"
+        
             let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            //slide3.imageView.image = UIImage(named: "ic_onboarding_3")
-            slide3.moveTitle.text = "Pull It"
-            slide3.moveDesc.text = "Pull your phone into your chest"
+            //slide2.imageView.image = UIImage(named: "ic_onboarding_2")
+            slide3.moveTitle.text = "Boop It"
+            slide3.moveDesc.text = "Hit your phone"
             
             let slide4:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            //slide4.imageView.image = UIImage(named: "ic_onboarding_4")
-            slide4.moveTitle.text = "Twist It"
-            slide4.moveDesc.text = "Twist your phone clockwise"
-            
+            //slide3.imageView.image = UIImage(named: "ic_onboarding_3")
+            slide4.moveTitle.text = "Pull It"
+            slide4.moveDesc.text = "Pull your phone into your chest"
             
             let slide5:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            //slide5.imageView.image = UIImage(named: "ic_onboarding_5")
-            slide5.moveTitle.text = "Push It"
-            slide5.moveDesc.text = "Push your phone away from you, push it real good"
-        
-            let slide6:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-            //slide6.imageView.image = UIImage(named: "ic_onboarding_5")
-            slide6.moveTitle.text = "Slide It"
-            slide6.moveDesc.text = "Slide your phone to the right"
+            //slide4.imageView.image = UIImage(named: "ic_onboarding_4")
+            slide5.moveTitle.text = "Twist It"
+            slide5.moveDesc.text = "Twist your phone clockwise"
             
-            return [slide1, slide2, slide3, slide4, slide5, slide6]
+            
+            let slide6:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            //slide5.imageView.image = UIImage(named: "ic_onboarding_5")
+            slide6.moveTitle.text = "Push It"
+            slide6.moveDesc.text = "Push your phone away from you"
+        
+            let slide7:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            //slide7.imageView.image = UIImage(named: "ic_onboarding_5")
+            slide7.moveTitle.text = "Slide It"
+            slide7.moveDesc.text = "Slide your phone to the right"
+            
+            return [slide1, slide2, slide3, slide4, slide5, slide6, slide7]
         }
     var slides:[Slide] = [];
     override func viewDidLoad() {
@@ -88,7 +93,7 @@ class HowToPlayViewController: UIViewController {
     }
     
     private func configureScrollView() {
-        scrollView.contentSize = CGSize(width: view.frame.size.width*6, height: 0)
+        scrollView.contentSize = CGSize(width: view.frame.size.width*7, height: 0)
         scrollView.isPagingEnabled = true
         let colors: [UIColor]  = [
             self.bopItBlue,
@@ -96,9 +101,10 @@ class HowToPlayViewController: UIViewController {
             self.bopItPurple,
             self.bopItBlue,
             self.bopItYellow,
-            self.bopItPurple,]
+            self.bopItPurple,
+            self.bopItBlue]
         
-        for i in 0..<6 {
+        for i in 0..<7 {
             print(i)
             slides[i].frame = CGRect(x: CGFloat(i) * view.frame.size.width, y: 0, width: view.frame.size.width, height: scrollView.frame.size.height)
             slides[i].backgroundColor = colors[i]

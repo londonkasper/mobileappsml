@@ -15,27 +15,41 @@
             <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z47-GC-z25">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z47-GC-z25">
                     <rect key="frame" x="0.0" y="174" width="390" height="208"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="208" id="hNO-cK-XOZ"/>
+                    </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNe-JW-DOA">
-                    <rect key="frame" x="48" y="514" width="304" height="36"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fbs-I9-hJJ">
+                    <rect key="frame" x="149.66666666666666" y="416" width="90.666666666666657" height="45.666666666666686"/>
+                    <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="42"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fbs-I9-hJJ">
-                    <rect key="frame" x="108" y="429" width="185" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="6" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNe-JW-DOA">
+                    <rect key="frame" x="37.666666666666657" y="499" width="315" height="122"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="122" id="MhF-yD-K0t"/>
+                        <constraint firstAttribute="width" constant="315" id="adz-3Q-teY"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="27"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="iNe-JW-DOA" firstAttribute="centerX" secondItem="Fbs-I9-hJJ" secondAttribute="centerX" id="01w-EC-0vb"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="iNe-JW-DOA" secondAttribute="bottom" constant="189" id="7et-rX-eN7"/>
+                <constraint firstItem="Fbs-I9-hJJ" firstAttribute="top" secondItem="z47-GC-z25" secondAttribute="bottom" constant="34" id="G09-9j-tEa"/>
+                <constraint firstItem="z47-GC-z25" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="127" id="NTf-av-6kG"/>
+                <constraint firstItem="iNe-JW-DOA" firstAttribute="top" secondItem="Fbs-I9-hJJ" secondAttribute="bottom" constant="37.329999999999998" id="Shh-C9-McS"/>
+                <constraint firstItem="z47-GC-z25" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="T26-5D-JW2"/>
+                <constraint firstItem="z47-GC-z25" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="d20-xO-6Mc"/>
+                <constraint firstItem="Fbs-I9-hJJ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ikH-3y-UNL"/>
+            </constraints>
             <connections>
                 <outlet property="imageView" destination="z47-GC-z25" id="sit-QK-t4L"/>
                 <outlet property="moveDesc" destination="iNe-JW-DOA" id="eQ0-mV-cAd"/>
