@@ -98,5 +98,14 @@ class DifficultyViewController: UIViewController {
         view.layer.insertSublayer(gradient, at: 0)
     }
     
-    //TODO: Segue passes in difficultyNumber
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+               
+           // Create a variable to store the name the user entered on textField
+        let difficulty = self.difficultyNumber
+               
+           // Create a new variable to store the instance of the SecondViewController
+           // set the variable from the SecondViewController that will receive the data
+           let destinationVC = segue.destination as! GameViewController
+           destinationVC.userGame = difficulty
+       }
 }

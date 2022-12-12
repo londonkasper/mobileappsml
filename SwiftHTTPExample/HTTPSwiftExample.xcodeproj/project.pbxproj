@@ -22,6 +22,7 @@
 		92546201294694C700E88270 /* slide_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461FC294694C700E88270 /* slide_it.mp3 */; };
 		92546202294694C700E88270 /* pull_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461FD294694C700E88270 /* pull_it.mp3 */; };
 		92546203294694C700E88270 /* bop_it.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 925461FE294694C700E88270 /* bop_it.mp3 */; };
+		925462152946BD5400E88270 /* HowToPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925462142946BD5400E88270 /* HowToPlayViewController.swift */; };
 		92E5AB9E29459FF500E777C1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E5AB9D29459FF500E777C1 /* GameViewController.swift */; };
 		B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DA1ACA2D6800A9970E /* AppDelegate.swift */; };
 		B67483DD1ACA2D6800A9970E /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67483DC1ACA2D6800A9970E /* RootViewController.swift */; };
@@ -52,6 +53,7 @@
 		925461FC294694C700E88270 /* slide_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = slide_it.mp3; sourceTree = "<group>"; };
 		925461FD294694C700E88270 /* pull_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pull_it.mp3; sourceTree = "<group>"; };
 		925461FE294694C700E88270 /* bop_it.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bop_it.mp3; sourceTree = "<group>"; };
+		925462142946BD5400E88270 /* HowToPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayViewController.swift; sourceTree = "<group>"; };
 		92E5AB9D29459FF500E777C1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		B67483D51ACA2D6800A9970E /* HTTPSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67483D91ACA2D6800A9970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -77,9 +79,6 @@
 		156DAFFC294676E500846E4F /* Old */ = {
 			isa = PBXGroup;
 			children = (
-				158075BB292A243400D0B076 /* ModuleAViewController.swift */,
-				158075BF292A255000D0B076 /* TrainingViewController.swift */,
-				158075C1292A257100D0B076 /* TestingViewController.swift */,
 			);
 			name = Old;
 			sourceTree = "<group>";
@@ -106,6 +105,7 @@
 				92074CCE29464ED0000CA7F5 /* TuriModel.mlmodel */,
 				92E5AB9D29459FF500E777C1 /* GameViewController.swift */,
 				925461D3294681B900E88270 /* AudioModel.swift */,
+				925462142946BD5400E88270 /* HowToPlayViewController.swift */,
 				158075BB292A243400D0B076 /* ModuleAViewController.swift */,
 				156DAFFD2946898200846E4F /* DifficultyViewController.swift */,
 				B67483DA1ACA2D6800A9970E /* AppDelegate.swift */,
@@ -236,6 +236,7 @@
 				B694B01A1FA377E4009A4277 /* RingBuffer.swift in Sources */,
 				925461D4294681B900E88270 /* AudioModel.swift in Sources */,
 				925461F9294691C100E88270 /* Novocaine.m in Sources */,
+				925462152946BD5400E88270 /* HowToPlayViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
