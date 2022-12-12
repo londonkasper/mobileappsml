@@ -47,6 +47,14 @@ class DifficultyViewController: UIViewController {
         setupBackground(remove: false)
         getHighScore()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DifficultyLabel.text = difficulties[difficultyNumber]
+        bopItButton.backgroundColor = bopItButtonColors[difficultyNumber]
+        setupBackground(remove: false)
+        getHighScore()
+    }
+
     
     func afterArrowPress() {
         DifficultyLabel.text = difficulties[difficultyNumber]

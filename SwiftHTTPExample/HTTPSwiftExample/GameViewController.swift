@@ -29,6 +29,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
 
     @IBOutlet weak var motionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var highScoreLabel: UILabel!
     
     var turiModel:TuriModel = {
         do{
@@ -43,6 +44,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        highScoreLabel.text = ""
         gameSpeed = speed[userGame]
         print(gameSpeed)
         roundsToFaster = faster[userGame]
@@ -116,6 +118,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                 timer.invalidate() // invalidate the timer
                 playing = false
                 self.isWaitingForMotionData = false
+                self.endGame()
             }
             if (playing) {
                 self.view.backgroundColor = .white
@@ -161,6 +164,7 @@ class GameViewController: UIViewController, URLSessionDelegate {
                     print("Wrong Move!")
                     self.timer.invalidate()
                     self.view.backgroundColor = .red
+                    self.endGame()
                 }
             }
             else {
@@ -175,8 +179,23 @@ class GameViewController: UIViewController, URLSessionDelegate {
         }
     }
 
-    func getPrediction(_ array:[Double]){
-
+    func endGame() {
+        print("HERE")
+        let difficulties =  ["Wimp", "Novice", "Expert"]
+        if let highScore = UserDefaults.standard.string(forKey: difficulties[userGame]) {
+            if  self.score > Int(highScore)! {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.view.backgroundColor = .white
+                    self.motionLabel.text = ""
+                    self.scoreLabel.text = ""
+                    self.highScoreLabel.text = "New High Score!"
+                    self.createLayer()
+                    UserDefaults.standard.set(self.score, forKey: difficulties[self.userGame])
+                }
+            }
+        } else {
+            UserDefaults.standard.set(self.score, forKey: difficulties[userGame])
+        }
     }
     
     
@@ -239,9 +258,47 @@ class GameViewController: UIViewController, URLSessionDelegate {
             return sequence
     }
     
+    private func createLayer() {
+        let layer = CAEmitterLayer()
+        layer.emitterPosition = CGPoint(x: view.center.x,  y: -100)
+        
+        let colors: [UIColor] = [
+            .systemGreen,
+            .systemRed,
+            .systemBlue,
+            .systemOrange,
+            .systemPurple,
+            .systemPink,
+            .systemYellow
+        ]
+        let cells: [CAEmitterCell] = colors.compactMap {
+            let cell = CAEmitterCell()
+            cell.scale = 0.1
+            cell.emissionRange = .pi * 2
+            cell.lifetime = 10
+            cell.birthRate = 25
+            cell.velocity = 150
+            cell.color  = $0.cgColor
+            cell.contents = UIImage(named:"square")!.cgImage
+            return cell
+        }
+
+        layer.emitterCells = cells
+        
+        view.layer.addSublayer(layer)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.endParticles(emitterLayer:layer)
+        }
+    }
+    
+    @objc func endParticles(emitterLayer:CAEmitterLayer) {
+        emitterLayer.lifetime = 0.0
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("HERE")
+        self.view.layer.removeAllAnimations()
         self.motion.stopDeviceMotionUpdates()
         self.timer.invalidate()
         audio.turnOff()
