@@ -5,24 +5,9 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupBopItLabel()
       }
     
     @IBOutlet weak var bopItLabel: UILabel!
-    //TODO: Add animations to this label
-    func setupBopItLabel() {
-        UIView.animate(withDuration: 0.07, animations: {
-            self.bopItLabel.transform = CGAffineTransform(translationX: 10, y: 0)
-        }, completion: { (finished: Bool) in
-            UIView.animate(withDuration: 0.05, animations: {
-                self.bopItLabel.transform = CGAffineTransform(translationX: -10, y: 0)
-            }, completion: { (finished: Bool) in
-                UIView.animate(withDuration: 0.05, animations: {
-                    self.bopItLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-                })
-            })
-        })
-    }
     
     lazy var gradient: CAGradientLayer = {
         // https://medium.com/swlh/how-to-create-a-custom-gradient-in-swift-with-cagradientlayer-ios-swift-guide-190941cb3db2
