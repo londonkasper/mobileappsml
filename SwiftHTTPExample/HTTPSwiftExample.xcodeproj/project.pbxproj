@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		156DAFFE2946898200846E4F /* DifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAFFD2946898200846E4F /* DifficultyViewController.swift */; };
 		158075BC292A243400D0B076 /* ModuleAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075BB292A243400D0B076 /* ModuleAViewController.swift */; };
 		158075C0292A255000D0B076 /* TrainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075BF292A255000D0B076 /* TrainingViewController.swift */; };
 		158075C2292A257100D0B076 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158075C1292A257100D0B076 /* TestingViewController.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		156DAFFD2946898200846E4F /* DifficultyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyViewController.swift; sourceTree = "<group>"; };
 		158075BB292A243400D0B076 /* ModuleAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleAViewController.swift; sourceTree = "<group>"; };
 		158075BF292A255000D0B076 /* TrainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingViewController.swift; sourceTree = "<group>"; };
 		158075C1292A257100D0B076 /* TestingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +74,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		156DAFFC294676E500846E4F /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				158075BB292A243400D0B076 /* ModuleAViewController.swift */,
+				158075BF292A255000D0B076 /* TrainingViewController.swift */,
+				158075C1292A257100D0B076 /* TestingViewController.swift */,
+			);
+			name = Old;
+			sourceTree = "<group>";
+		};
 		B67483CC1ACA2D6800A9970E = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +107,7 @@
 				92E5AB9D29459FF500E777C1 /* GameViewController.swift */,
 				925461D3294681B900E88270 /* AudioModel.swift */,
 				158075BB292A243400D0B076 /* ModuleAViewController.swift */,
+				156DAFFD2946898200846E4F /* DifficultyViewController.swift */,
 				B67483DA1ACA2D6800A9970E /* AppDelegate.swift */,
 				B67483DC1ACA2D6800A9970E /* RootViewController.swift */,
 				B694B0191FA377E4009A4277 /* RingBuffer.swift */,
@@ -116,6 +129,7 @@
 		B67483D81ACA2D6800A9970E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				156DAFFC294676E500846E4F /* Old */,
 				B67483D91ACA2D6800A9970E /* Info.plist */,
 				925461E92946888900E88270 /* AudioFileReader.h */,
 				925461EA2946894C00E88270 /* AudioFileReader.m */,
@@ -213,6 +227,7 @@
 				158075C0292A255000D0B076 /* TrainingViewController.swift in Sources */,
 				92E5AB9E29459FF500E777C1 /* GameViewController.swift in Sources */,
 				158075BC292A243400D0B076 /* ModuleAViewController.swift in Sources */,
+				156DAFFE2946898200846E4F /* DifficultyViewController.swift in Sources */,
 				B67483DD1ACA2D6800A9970E /* RootViewController.swift in Sources */,
 				925461F129468A5D00E88270 /* FFTHelper.m in Sources */,
 				B67483DB1ACA2D6800A9970E /* AppDelegate.swift in Sources */,
